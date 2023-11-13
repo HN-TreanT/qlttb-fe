@@ -11,40 +11,28 @@ import './Layout.scss'
 const { Header, Content } = Layout;
 
 const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  // const user = localStorage.getItem("user");
-  // if (!user) {
-  //   return <Navigate to={"/login"} />;
-  // }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to={"/login"} />;
+  }
 
   return (
-   <Layout className="site-layout">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed}/>
-      <Layout>
+   <Layout hasSider>
+      <Sidebar/>
+      <Layout className="site-layout" style={{ marginLeft:  300 }}>
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
         </Header>
         <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-          }}
+          style={{ margin: '24px 16px 0', overflow: 'initial',
+         }}
         >
-          <Outlet/>
+          <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
+                 <Outlet/>
+          </div>
         </Content>
       </Layout>
     </Layout>

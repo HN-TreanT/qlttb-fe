@@ -104,16 +104,21 @@ import SubMenu from "antd/es/menu/SubMenu";
       ],
     },
   ];
-const Sidebar = (props:props) => {
-  const {collapsed, setCollapsed} = props
+const Sidebar = () => {
   const navigate = useNavigate();
    const onClick = (e:any )=>{
     // console.log(e.key)
      navigate(e.key)
    }
-  console.log(window.location.pathname.split("/")[1]+'/'+ window.location.pathname.split("/")[2])
   return (
-    <Sider width={300}  trigger={null} collapsible collapsed={collapsed}>
+    <Sider style={{
+      overflow: 'auto',
+      height: '100vh',
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      bottom: 0,
+    }} width={300}  trigger={null}>
          <Image src={logo} preview={false} style={{ padding: 5 }} />
         <Menu
          

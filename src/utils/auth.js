@@ -1,4 +1,4 @@
-import { serverConfig } from "../const";
+import { serverConfig } from "../const/serverConfig";
 import axios from "axios";
 export default class Auth {
   static saveToken(token) {

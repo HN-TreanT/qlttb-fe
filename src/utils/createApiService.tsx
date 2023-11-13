@@ -31,7 +31,7 @@ const _makeRequest = (instantAxios: any) => async (args: any) => {
 const _makeAuthRequest = (instantAxios: any) => async (args: any) => {
   const requestHeaders = args.headers ? args.headers : {};
   let token = localStorage.getItem("token");
-  let refreshToken = localStorage.getItem("refreshToken");
+  let refreshToken = localStorage.getItem("refresh_token");
   let client_id = localStorage.getItem("client_id");
 
   let headers = {
@@ -42,9 +42,11 @@ const _makeAuthRequest = (instantAxios: any) => async (args: any) => {
     (response: any) => response,
     async (error: any) => {
       const status = error.response ? error.response.status : null;
+      console.log(status)
       const originalConfig = error.config;
       // Access Token was expired
       if (status === 401) {
+        console.log("check refres")
         return Auth.refreshToken(token, refreshToken).then((res) => {
           error.config.headers["Authorization"] = "Bearer " + getAuthToken();
           return instantAxios(error.config);

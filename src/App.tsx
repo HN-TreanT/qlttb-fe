@@ -7,10 +7,12 @@ import { RouterProvider } from 'react-router-dom';
 import './App.css';
 
 function App() {
+
   return (
     <Provider store={store}>
        <PersistGate loading={null} persistor={persistor}>
            <div className='MainApp'>
+           
               <div className='ContentApp'>
                   <RouterProvider router={router}/>
               </div>

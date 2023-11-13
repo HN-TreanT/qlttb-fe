@@ -1,7 +1,8 @@
-
+import { AuthActions } from "./auth/action";
+import { StateAction } from "./state/action";
+import { CanboAction } from "./canbo/actions";
 const useAction = () => {
-//   const actions = { MovieActions };
-const actions = {}
+   const actions = { AuthActions, StateAction , CanboAction};
   return actions;
 };
 
