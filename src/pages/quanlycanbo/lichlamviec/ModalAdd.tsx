@@ -1,20 +1,14 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Form, Row, Col, Modal, Input, DatePicker, Select, Button} from 'antd'
+import {Form, Row, Col, Modal, Input, DatePicker, Select, Button, InputNumber} from 'antd';
+import { lichlamviceServices } from "../../../utils/services/lichlamviecService";
 import { canboServices } from "../../../utils/services/canbo";
 import { message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import useAction from "../../../redux/useActions";
 import dayjs from "dayjs";
+import DebounceSelect from "../../../components/DebouceSelect"
 const FormItem = Form.Item
 
-const gioitinh = [
-  {
-    value: 1,
-    label: "Nam"
-  },
-  {
-    value: 0,
-    label: "Nữ"
-  }
-]
 interface Props {
   curData: any,
   open: boolean,
@@ -23,30 +17,59 @@ interface Props {
   getData: any
 
 }
- const ModalAddCanBo = (props: Props) => {
+
+interface UserValue {
+  label: string;
+  value: string;
+}
+
+async function fetchCanbo(search: string): Promise<UserValue[]> {
+  return canboServices.get( {
+      page : 1,
+      size : 100,
+      ...(search && search !== "" && {Ten_CB : search})
+    }
+  ).then((res) => {
+   
+    if(res.status) {
+        const temp = res?.data?.data.map((item: any) => {
+          return {
+            label: item?.Ten_CB,
+            value: item?.Ma_CB
+          }
+      })
+      return temp
+    }else {
+      return []
+    }
+    
+  }).catch((err :any) => console.log(err))
+}
+
+ const ModalAdd = (props: Props) => {
+  const dispatch = useDispatch()
+  const actions = useAction()
   const [messageApi, contextHolder] = message.useMessage();
+  const canbos = useSelector((state: any) => state.canbo.canbos)
   const [form] = Form.useForm()
   const {curData, open, handleModal, action, getData} = props
   useEffect(() => {
     if(curData){
-    
-      form.setFieldsValue({
-        TaiKhoan: curData?.TaiKhoan ? curData?.TaiKhoan :"",
-        MatKhau: curData?.MatKhau ? curData?.MatKhau :"",
-        Ten_CB: curData?.Ten_CB ? curData?.Ten_CB :"",
-         NgaySinh:curData?.NgaySinh ? dayjs(curData?.NgaySinh) :null,
-        SoDienThoai: curData?.SoDienThoai ? curData?.SoDienThoai :"",
-        GioiTinh: curData?.GioiTinh ? curData?.GioiTinh : 0,
+      form.setFieldsValue({ 
+         Ma_CB: curData?.CanBo?.Ten_CB ? curData?.CanBo?.Ten_CB : undefined,
+        
 
+        CongViec: curData?.CongViec ? curData?.CongViec :"",
+        Kip: curData?.Kip ? curData?.Kip :"",
+        Ngay:curData?.Ngay ? dayjs(curData?.Ngay) :null,
       })
     }
-  }, [curData, form])
+  }, [curData,form])
   const onFinish =async (values:any) => {
     try {
         if( action === "Add") {
-          const res = await canboServices.create({
+          const res = await lichlamviceServices.create({
             ...values,
-            role_id: "U"
           })
           if(res.status) {
             getData()
@@ -56,8 +79,10 @@ interface Props {
             message.error(res.message)
           }
         } else {
-          
-          const res = await canboServices.update(curData.Ma_CB, values)
+          if(curData?.CanBo.Ten_CB === values.Ma_CB) {
+            values.Ma_CB = curData.CanBo.Ma_CB 
+         }
+          const res = await lichlamviceServices.update(curData.Ma_LLV, values)
           if(res.status) {
             getData()
             handleModal()
@@ -72,10 +97,16 @@ interface Props {
     }
     
   }
+  useEffect(() => {
+    dispatch(actions.CanboAction.loadData({
+      page: 1,
+      size: 9
+    }))
+  }, [actions.CanboAction, dispatch])
   return  <Fragment>
     {contextHolder}
     <Modal
-     title={action === "Add" ? "Thêm mới cán bộ" : "Chỉnh sửa cán bộ"}
+     title={action === "Add" ? "Thêm mới lịch làm việc" : "Chỉnh sửa lịch làm việc"}
      open={open}
      footer={null}
      onCancel={() => handleModal()}
@@ -86,56 +117,44 @@ interface Props {
             <FormItem
               style={{marginBottom:"4px"}}
               label={
-                "Tên tài khoản"
+                "Cán bộ phụ trách"
               }
-              name='TaiKhoan'
+              name='Ma_CB'
               rules={[
                 {
                   required: true,
-                  message: 'Nhập tài khoản'
+                  message: 'Hãy chọn cán bộ phụ trách'
                 }
               ]}
             >
-              <Input  placeholder='Nhập tài khoản' />
+               <DebounceSelect
+                placeholder="Hãy chọn cán bộ"
+                fetchOptions={(value) => fetchCanbo(value)}
+                initOption={Array.isArray(canbos.data) ? canbos.data.map((item :any) => {
+                    
+                        return {
+                           label: item.Ten_CB,
+                           value: item.Ma_CB
+                        }
+                }) : []}
+                />
             </FormItem>
           </Col>
-         {
-          action === "Add" ?  <Col span={12}>
-          <FormItem
-             style={{marginBottom:"4px"}}
-            label={
-              "Mật khẩu"
-            }
-            name='MatKhau'
-            rules={[
-              {
-                required: true,
-                message: 'Nhập mật khẩu'
-              }
-            ]}
-          >
-            <Input
-              placeholder='Nhập mật khẩu'
-              style={{ width: '100%' }}
-            />
-          </FormItem>
-        </Col> : ""
-         }
           <Col span={12}>
             <FormItem
               style={{marginBottom:"4px"}}
               label={
-               "Tên cán bộ"
+               "Công việc"
               }
-              name='Ten_CB'
+              name='CongViec'
               rules={[
                 {
                   required: true,
-                  message: 'Hãy nhập tên cán bộ'
+                  message: 'Hãy nhập công việc'
                 }
               ]}
             >
-              <Input placeholder="Nhập tên cán bộ"/>
+              <Input placeholder="Nhập công việc "/>
               
             </FormItem>
           </Col>
@@ -143,17 +162,12 @@ interface Props {
             <FormItem
              style={{marginBottom:"4px"}}
               label={
-                "Ngày sinh"
+                "Ngày thực hiện"
               }
-              name='NgaySinh'
-              rules={[
-                {
-                  required: true,
-                  message: 'Hãy chọn ngày sinh'
-                }
-              ]}
+              name='Ngay'
+             
             >
-              <DatePicker style={{width:"100%"}} placeholder="Chọn ngày sinh"/>
+              <DatePicker style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
               
             </FormItem>
           </Col>
@@ -161,39 +175,17 @@ interface Props {
             <FormItem
              style={{marginBottom:"4px"}}
               label={
-                "Số điện thoại"
+                "Kíp"
               }
-              name='SoDienThoai'
-              rules={[
-                {
-                  required: true,
-                  message: 'Hãy nhập số điện thoại'
-                }
-              ]}
+              name='Kip'
+              
             >
-              <Input placeholder="Nhập số điện thoại"/>
+              <InputNumber style={{width:"100%"}} placeholder="Nhập kíp"/>
               
             </FormItem>
             
           </Col>
-          <Col span={12}>
-            <FormItem
-             style={{marginBottom:"4px"}}
-              label={
-                "Giới tính"
-              }
-              name='GioiTinh'
-              rules={[
-                {
-                  required: true,
-                  message: 'Hãy chọn giới tính'
-                }
-              ]}
-            >
-              <Select options={gioitinh} placeholder="Chọn giới tính"/>
-              
-            </FormItem>
-          </Col>
+      
         </Row>
         <Row>
            
@@ -221,4 +213,4 @@ interface Props {
   </Fragment>
 };
 
-export default ModalAddCanBo
+export default ModalAdd

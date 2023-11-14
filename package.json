@@ -57,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.201",
     "@types/react-router-redux": "^5.0.22",
     "@types/styled-components": "^5.1.29"
   }

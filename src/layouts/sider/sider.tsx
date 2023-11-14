@@ -66,11 +66,15 @@ import SubMenu from "antd/es/menu/SubMenu";
 
     {
       key: "muontra",
-      label: "Quản lý mượn trả trang thiết bị",
+      label: "Quản lý mượn trả ",
       icon: (
         <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
       ),
       children: [
+        {
+          key: RouterLinks.MUON_TRA,
+          label: "Mượn trả",
+        },
         {
           key: RouterLinks.LS_SU_DUNG_TTB,
           label:"Lịch sử sử dụng",
@@ -80,27 +84,14 @@ import SubMenu from "antd/es/menu/SubMenu";
           label: "Lịch học tập",
         },
         {
-          key: RouterLinks.MUON_TRA,
-          label: "Mượn trả",
-        },
-      ],
-    },
-
-    {
-      key: "lichbaoduong",
-      label: "Quản lý bảo dưỡng",
-      icon: (
-        <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
-      ),
-      children: [
-        {
-          key: RouterLinks.LICH_BAO_DUONG,
-          label:"Lịch bảo dưỡng ",
+          key: RouterLinks.DANH_SACH_LOP,
+          label: "Danh sách lớp",
         },
         {
-          key: RouterLinks.CHAT_LUONG,
-          label: "Chất lượng",
-        }
+          key: RouterLinks.DANH_SACH_PHONG,
+          label: "Danh sách phòng",
+        },
+      
       ],
     },
   ];

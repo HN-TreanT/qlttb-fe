@@ -1,46 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Input} from "antd"
-import { useSelector } from "react-redux";
+import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Typography, Input} from "antd"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons' 
 import { ColumnProps } from "antd/es/table";
-import dayjs from "dayjs";
+import useAction from "../../../redux/useActions";
 import { message } from "antd";
-import { canboServices } from "../../../utils/services/canbo";
-import LichLamViec from "./LichLamViec";
+import { phonghocServices } from "../../../utils/services/phonghocServices";
+import { useSelector , useDispatch} from "react-redux";
 interface DataType {
   key: number;
-  NgaySinh: Date;
-  SoDienThoai: string;
-  Ten_CB: string;
+  TenPhong: string;
+  GiangDuong: string;
 }
-const DanhSachCanBo = () => {
-  const params = useSelector((state: any) => state.canbo.params)
-  const [currentPage, setCurrentPage] = useState(params?.page ? params.page : 1)
-  const [rowsPerPage, setRowsPerpage] = useState(params?.size ? params.size : 9)
-  const [search, setSearch] = useState<string>('')
+
+
+
+const DanhSachPhong = () => {
+    const dispatch = useDispatch()
+    const actions = useAction()
+  
+  const loading = useSelector((state: any) => state.state.loadingState)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [rowsPerPage, setRowsPerpage] = useState(9)
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})
-  const [data, setData] = useState([])
   const [count, setCount] = useState(0)
+  const [data, setData] = useState([])
+  const [search, setSearch] = useState<string>('')
   const [messageApi, contextHolder] = message.useMessage();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = () => {
-    canboServices.get({
+    dispatch(actions.StateAction.loadingState(true))
+    phonghocServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && {Ten_CB: search})
-    }).then((res : any) => {
-        if(res.status) {
+      ...(search && search !== " " && {search})
+    }).then((res) => {
+       if(res.status) {
           setCount(res.data.count)
           setData(res.data.data)
-        }
+       }
+    dispatch(actions.StateAction.loadingState(false ))
+
     }).catch((err :any) => {
       console.log(err)
+    dispatch(actions.StateAction.loadingState(false))
+
     })
   }
-
   const hanldeModalAdd = () => {
        setOpenModalAdd(false)
   }
@@ -56,14 +63,9 @@ const DanhSachCanBo = () => {
 
   const hanldeDelete =async (id:number) => {
     try {
-       const res = await canboServices.deleteById(id)
+       const res = await phonghocServices.deleteById(id)
        if(res.status) {
-        // dispatch(actions.CanboAction.loadData({
-        //   page : currentPage,
-        //   size: rowsPerPage,
-        //   ...(search && search !== "" && {Ten_CB : search})
-        //  }))
-        getData()
+          getData()
        }else {
          message.error(res.message)
        }
@@ -83,29 +85,15 @@ const DanhSachCanBo = () => {
        render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Tên cán bộ",
-      dataIndex: "Ten_CB",
-      align:"center"
-    },
+      title: "Tên phòng học",
+      dataIndex: "TenPhong",
+      align:"center",
+    },   
     {
-      title: "Ngày sinh",
-      dataIndex: "NgaySinh",
+      title: "Giảng đường",
+      dataIndex: "GiangDuong",
       align: 'center',
-      width: '20%',
-      render: (text, record, index) => <span>{text ? dayjs(text).format("DD/MM/YYYY") : ""}</span>
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "SoDienThoai",
-      align: 'center',
-      width: '20%',
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "GioiTinh",
-      align: 'center',
-      width: '10%',
-      render: (text, record, index) => <span>{text === 1 ? "Nam" : "Nữ"}</span>
+    //   width: '10%',
     },
     {
         title: 'Thao tác',
@@ -113,23 +101,16 @@ const DanhSachCanBo = () => {
         render: (record: any, index :any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
             
               <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer'}} />     
-                <Popconfirm onConfirm={() => hanldeDelete(record.Ma_CB)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
+                <Popconfirm onConfirm={() => hanldeDelete(record.Ma_PH)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
                     <DeleteOutlined  style={{ color: 'red', cursor: 'point' }} />
                 </Popconfirm>
         </div>
     }
 ]
 
-  // useEffect(() => {
-  //    dispatch(actions.CanboAction.loadData({
-  //     page : currentPage,
-  //     size: rowsPerPage,
-  //     ...(search && search !== "" && {Ten_CB : search})
-  //    }))
-  // }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
   useEffect(() => {
-    getData()
-  }, [currentPage, rowsPerPage, search])
+     getData()
+  }, [ currentPage, rowsPerPage, search])
   return <div className="ds_canbo">
     {contextHolder}
       <Row>
@@ -137,11 +118,11 @@ const DanhSachCanBo = () => {
           style={{ margin: "auto", marginLeft: 0 }}
           items={[
             {
-              title: "Quản lý cán bộ",
+              title: "Quản lý mượn trả",
             },
             {
               title: (
-                <span style={{ fontWeight: "bold" }}>Danh sách cán bộ</span>
+                <span style={{ fontWeight: "bold" }}>Phòng học</span>
               ),
             },
           ]}
@@ -162,7 +143,7 @@ const DanhSachCanBo = () => {
       <Row>
         <Col span={6}>
           <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
-            <label style={{marginBottom:"4px"}}>Tên cán bộ</label>
+            <label style={{marginBottom:"4px"}}>Tên phòng</label>
             <Input
                 type="text"
                 placeholder="Tìm kiếm"
@@ -186,22 +167,12 @@ const DanhSachCanBo = () => {
       <Row>
 
       <Table
-            //  loading={loading}
+             loading={loading}
             style={{width:"100%"}}
             rowClassName={() => 'editable-row'}
             bordered
-            dataSource={data.map((item :any) => {
-              return {
-                ...item,
-                key : item.Ma_CB
-              }
-            })}
+            dataSource={data}
             columns={columns}
-
-            expandable={{
-              expandedRowRender: (record) => <LichLamViec record={record}/>,
-              // rowExpandable: (record) => record.name !== 'Not Expandable',
-            }}
             pagination={{
                 current: currentPage,
                 pageSize: rowsPerPage,
@@ -230,6 +201,6 @@ const DanhSachCanBo = () => {
   </div>;
 };
 
-const ModalAdd = React.lazy(() => import("./ModalAddCanBo"))
+const ModalAdd = React.lazy(() => import("./ModalAdd"))
 
-export default DanhSachCanBo;
+export default DanhSachPhong;

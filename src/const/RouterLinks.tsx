@@ -11,6 +11,7 @@ export const RouterLinks = {
   MUON_TRA:"/quanlysudungttb/muon_tra",
   LICH_BAO_DUONG:"/quanlybaoduong/lich_bao_duong" ,
   CHAT_LUONG:"/quanlybaoduong/chat_luong",
-
+  DANH_SACH_PHONG:"/quanlymuontra/danh_sach_phong",
+  DANH_SACH_LOP:"/quanlymuontra/danh_sach_lop"
 };
   

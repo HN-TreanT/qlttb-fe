@@ -14,6 +14,9 @@ import LichHocTap from "../pages/quanlymuontra/LichHocTap/LichHocTap";
 import MuonTra from "../pages/quanlymuontra/MuonTra/MuonTra";
 import LichBaoDuong from "../pages/quanlybaoduong/lichbaoduong/LichBaoDuong";
 import ChatLuong from "../pages/quanlybaoduong/chatluongbaoduong/ChatLuong";
+import DanhSachLop from "../pages/quanlymuontra/DanhSachLop/DanhSachLop";
+import DanhSachPhong from "../pages/quanlymuontra/DanhSachPhong/DanhSachPhong";
+
 export const router = createBrowserRouter([
   {
     path: "login",
@@ -68,6 +71,15 @@ export const router = createBrowserRouter([
         path: RouterLinks.CHAT_LUONG,
         element: <ChatLuong />,
       },
+      {
+        path: RouterLinks.DANH_SACH_LOP,
+        element: <DanhSachLop />,
+      },
+      {
+        path: RouterLinks.DANH_SACH_PHONG,
+        element: <DanhSachPhong />,
+      },
+
     ],
   },
 ]);
