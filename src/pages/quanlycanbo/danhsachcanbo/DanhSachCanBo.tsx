@@ -181,12 +181,23 @@ const DanhSachCanBo = () => {
     <Row>
 
       <Table
-        loading={loading}
+        // loading={loading}
         style={{ width: "100%" }}
         rowClassName={() => 'editable-row'}
         bordered
-        dataSource={data}
+        dataSource={data.map((item :any) => {
+          return {
+            ...item,
+            key: item.Ma_CB
+          }
+        })}
         columns={columns}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <LichLamViec  record={record} />
+          },
+          
+        }}
         pagination={{
           current: currentPage,
           pageSize: rowsPerPage,
