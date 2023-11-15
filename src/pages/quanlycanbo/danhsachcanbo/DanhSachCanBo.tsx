@@ -28,7 +28,6 @@ const DanhSachCanBo = () => {
   const [count, setCount] = useState(0)
   const [messageApi, contextHolder] = message.useMessage();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = () => {
     canboServices.get({
       page: currentPage,
@@ -38,6 +37,7 @@ const DanhSachCanBo = () => {
       if (res.status) {
         setCount(res.data.count)
         setData(res.data.data)
+       
       }
     }).catch((err: any) => {
       console.log(err)
@@ -122,20 +122,9 @@ const DanhSachCanBo = () => {
     }
   ]
 
-  // useEffect(() => {
-  //    dispatch(actions.CanboAction.loadData({
-  //     page : currentPage,
-  //     size: rowsPerPage,
-  //     ...(search && search !== "" && {Ten_CB : search})
-  //    }))
-  // }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
   useEffect(() => {
-    dispatch(actions.CanboAction.loadData({
-      page: currentPage,
-      size: rowsPerPage,
-      ...(search && search !== "" && { Ten_CB: search })
-    }))
-  }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
+    getData()
+  }, [currentPage, rowsPerPage, search])
   return <div className="ds_canbo">
     {contextHolder}
     <Row>

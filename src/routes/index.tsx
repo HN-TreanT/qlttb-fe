@@ -20,6 +20,7 @@ export const router = createBrowserRouter([
   {
     path: "login",
     element: <Login />,
+  
   },
   {
     path: "register",
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       {
         path: RouterLinks.CAN_BO,
         element: <DanhSachCanBo />,
+        
       },
       {
         path: RouterLinks.LICH_LAM_VIEC,

@@ -21,7 +21,7 @@ const App: React.FC = () => {
   }
 
   return (
-   <Layout hasSider>
+   <Layout >
       <Sidebar/>
       <Layout className="site-layout" style={{ marginLeft:  300 }}>
         <Header style={{ padding: 0, background: colorBgContainer }}>

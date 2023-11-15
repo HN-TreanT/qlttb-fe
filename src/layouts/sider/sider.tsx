@@ -1,6 +1,6 @@
 import Sider from "antd/es/layout/Sider";
 import { Image, Menu } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.png'
 import { RouterLinks } from "../../const/RouterLinks";
 import {
@@ -19,6 +19,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import SubMenu from "antd/es/menu/SubMenu";
+import { memo } from "react";
 
 interface props {
   collapsed: any,
@@ -63,89 +64,43 @@ const menuItems = [
       },
     ],
   },
-
-<<<<<<< HEAD
   {
     key: "muontra",
-    label: "Quản lý mượn trả trang thiết bị",
+    label: "Quản lý mượn trả ",
     icon: (
       <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
     ),
     children: [
       {
+        key: RouterLinks.MUON_TRA,
+        label: "Mượn trả",
+      },
+      {
         key: RouterLinks.LS_SU_DUNG_TTB,
-        label: "Lịch sử sử dụng",
+        label:"Lịch sử sử dụng",
       },
       {
         key: RouterLinks.LICH_HOC_TAP,
         label: "Lịch học tập",
       },
       {
-        key: RouterLinks.PHONG_HOC,
-        label: "Phòng Học",
+        key: RouterLinks.DANH_SACH_LOP,
+        label: "Danh sách lớp",
       },
       {
-        key: RouterLinks.MUON_TRA,
-        label: "Mượn trả",
+        key: RouterLinks.DANH_SACH_PHONG,
+        label: "Danh sách phòng",
       },
+    
     ],
   },
 
-  {
-    key: "lichbaoduong",
-    label: "Quản lý bảo dưỡng",
-    icon: (
-      <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
-    ),
-    children: [
-      {
-        key: RouterLinks.LICH_BAO_DUONG,
-        label: "Lịch bảo dưỡng ",
-      },
-      {
-        key: RouterLinks.CHAT_LUONG,
-        label: "Chất lượng",
-      }
-    ],
-  },
 ];
-=======
-    {
-      key: "muontra",
-      label: "Quản lý mượn trả ",
-      icon: (
-        <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
-      ),
-      children: [
-        {
-          key: RouterLinks.MUON_TRA,
-          label: "Mượn trả",
-        },
-        {
-          key: RouterLinks.LS_SU_DUNG_TTB,
-          label:"Lịch sử sử dụng",
-        },
-        {
-          key: RouterLinks.LICH_HOC_TAP,
-          label: "Lịch học tập",
-        },
-        {
-          key: RouterLinks.DANH_SACH_LOP,
-          label: "Danh sách lớp",
-        },
-        {
-          key: RouterLinks.DANH_SACH_PHONG,
-          label: "Danh sách phòng",
-        },
-      
-      ],
-    },
-  ];
->>>>>>> f6bf3eab9d6bdc7542aa75c422f4d5f0c9e8a9e6
+
+   
 const Sidebar = () => {
   const navigate = useNavigate();
   const onClick = (e: any) => {
-    // console.log(e.key)
     navigate(e.key)
   }
   return (
@@ -159,11 +114,9 @@ const Sidebar = () => {
     }} width={300} trigger={null}>
       <Image src={logo} preview={false} style={{ padding: 5 }} />
       <Menu
-
         selectedKeys={['/' + window.location.pathname.split("/")[1] + '/' + window.location.pathname.split("/")[2]]}
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={['1']}
         items={menuItems}
         onClick={onClick}
       >
@@ -186,7 +139,7 @@ const Sidebar = () => {
                     key={childItem.key}
 
                   >
-                    {/* <Link to={childItem.url}>{childItem.label}</Link> */}
+                    {/* <Link to={childItem.key}>{childItem.label}</Link> */}
                     {item.label}
                   </Menu.Item>
                 ))}
@@ -199,7 +152,7 @@ const Sidebar = () => {
                 icon={item.icon}
               >
                 {item.label}
-                {/* <Link to={item.url}>{item.label}</Link> */}
+                {/* <Link to={item.key}>{item.label}</Link> */}
               </Menu.Item>
             );
           }
@@ -210,4 +163,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);
