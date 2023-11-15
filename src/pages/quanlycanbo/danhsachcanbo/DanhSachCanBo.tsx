@@ -15,8 +15,6 @@ interface DataType {
   Ten_CB: string;
 }
 const DanhSachCanBo = () => {
-  const dispatch = useDispatch()
-  const actions = useAction()
   const loading = useSelector((state: any) => state.state.loadingState)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(9)
@@ -28,7 +26,6 @@ const DanhSachCanBo = () => {
   const [count, setCount] = useState(0)
   const [messageApi, contextHolder] = message.useMessage();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = () => {
     canboServices.get({
       page: currentPage,
@@ -61,11 +58,7 @@ const DanhSachCanBo = () => {
     try {
       const res = await canboServices.deleteById(id)
       if (res.status) {
-        dispatch(actions.CanboAction.loadData({
-          page: currentPage,
-          size: rowsPerPage,
-          ...(search && search !== "" && { Ten_CB: search })
-        }))
+        getData()
       } else {
         message.error(res.message)
       }
@@ -122,20 +115,9 @@ const DanhSachCanBo = () => {
     }
   ]
 
-  // useEffect(() => {
-  //    dispatch(actions.CanboAction.loadData({
-  //     page : currentPage,
-  //     size: rowsPerPage,
-  //     ...(search && search !== "" && {Ten_CB : search})
-  //    }))
-  // }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
   useEffect(() => {
-    dispatch(actions.CanboAction.loadData({
-      page: currentPage,
-      size: rowsPerPage,
-      ...(search && search !== "" && { Ten_CB: search })
-    }))
-  }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
+    getData()
+  }, [currentPage, rowsPerPage])
   return <div className="ds_canbo">
     {contextHolder}
     <Row>

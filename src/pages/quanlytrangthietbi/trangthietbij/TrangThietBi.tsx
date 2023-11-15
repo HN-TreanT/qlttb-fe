@@ -14,7 +14,10 @@ interface DataType {
   NgayNhap: Date;
   // SoDienThoai: string;
   Ten_TTB: string;
+
 }
+import { loaittbServices } from "../../../utils/services/loaittbSevices";
+import { phonghocServices } from "../../../utils/services/phonghocSevices";
 const TrangThietBi = () => {
   const dispatch = useDispatch()
   const actions = useAction()
@@ -26,6 +29,8 @@ const TrangThietBi = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})
+  const [loaiTTb, setLoaiTTB] = useState([])
+  const [phongHoc, setPhongHoc] = useState([])
   const [messageApi, contextHolder] = message.useMessage();
   const hanldeModalAdd = () => {
     setOpenModalAdd(false)
@@ -56,6 +61,46 @@ const TrangThietBi = () => {
       console.log(err)
       message.error("Xóa thất bại")
     }
+  };
+
+  const getLoaiTtb = () => {
+    loaittbServices.get({
+      page: 1,
+      size: 100
+    }).then((res: any) => {
+      if (res.status) {
+        const temp = res.data.data.map((item: any) => {
+          return {
+            ...item,
+            value: item.Ma_Loai_TTB,
+            label: item.Ten_Loai
+          }
+        })
+        setLoaiTTB(temp)
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+
+  const getPhonghoc = () => {
+    phonghocServices.get({
+      page: 1,
+      size: 100
+    }).then((res: any) => {
+      if (res.status) {
+        const temp = res.data.data.map((item: any) => {
+          return {
+            ...item,
+            value: item.Ma_PH,
+            label: item.TenPhong
+          }
+        })
+        setPhongHoc(temp)
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
   }
 
 
@@ -88,6 +133,11 @@ const TrangThietBi = () => {
       render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.GiangDuong : "Không có giảng đường này"}</div>,
     },
     {
+      title: "Trạng thái",
+      dataIndex: "TrangThai",
+      render: (TrangThai) => <div>{TrangThai == 1 ? "Đang mượn" : " chưa mượn "}</div>,
+    },
+    {
       title: "Ngày nhập",
       dataIndex: "NgayNhap",
       align: 'center',
@@ -100,12 +150,16 @@ const TrangThietBi = () => {
       render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
 
         <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
-        <Popconfirm onConfirm={() => hanldeDelete(record.Ma_CB)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
+        <Popconfirm onConfirm={() => hanldeDelete(record.Ma_TTB)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
           <DeleteOutlined style={{ color: 'red', cursor: 'point' }} />
         </Popconfirm>
       </div>
     }
   ]
+  useEffect(() => {
+    getLoaiTtb(),
+      getPhonghoc()
+  }, [])
 
   useEffect(() => {
     dispatch(actions.trangthietbiAction.loadData({
@@ -197,7 +251,7 @@ const TrangThietBi = () => {
       />
 
     </Row>
-    <ModalAdd curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} params={
+    <ModalAdd ten_PH={phongHoc} loai_ttbs={loaiTTb} curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} params={
       {
         page: currentPage,
         size: rowsPerPage,
@@ -205,7 +259,7 @@ const TrangThietBi = () => {
       }
     }
     />
-    <ModalAdd curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit}
+    <ModalAdd ten_PH={phongHoc} loai_ttbs={loaiTTb} curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit}
       params={
         {
           page: currentPage,

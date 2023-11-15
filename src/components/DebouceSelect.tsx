@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { AnyKindOfDictionary, debounce } from 'lodash';
+import { debounce } from 'lodash';
 import { Select, Spin } from 'antd';
 import type { SelectProps } from 'antd/es/select';
 
@@ -20,8 +20,8 @@ function DebounceSelect<
 
   const debounceFetcher = useMemo(() => {
     const loadOptions = (value: string) => {
-      const data = initOption?.filter((option : any) => (option?.label ?? '').toLowerCase().includes(value.toLowerCase()))
-      if(data.length > 0) {
+      const data = initOption?.filter((option: any) => (option?.label ?? '').toLowerCase().includes(value.toLowerCase()))
+      if (data.length > 0) {
         setOptions(data)
       }
       else {
@@ -31,13 +31,13 @@ function DebounceSelect<
         setFetching(true);
         fetchOptions(value).then((newOptions) => {
           console.log(value)
-            if (fetchId !== fetchRef.current) {
+          if (fetchId !== fetchRef.current) {
             // for fetch callback order
             return;
-            }
+          }
 
-            setOptions(newOptions);
-            setFetching(false);
+          setOptions(newOptions);
+          setFetching(false);
         });
       }
     };
@@ -49,11 +49,11 @@ function DebounceSelect<
     <Select
       allowClear
       showSearch
-       placeholder={placeholder}
+      placeholder={placeholder}
       filterOption={false}
       onSearch={debounceFetcher}
       notFoundContent={fetching ? <Spin size="small" /> : null}
-       {...props}
+      {...props}
       options={options}
     />
   );

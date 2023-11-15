@@ -14,6 +14,8 @@ interface Props {
     handleModal: Function,
     action: string,
     params: any,
+    loai_ttbs: any,
+    ten_PH: any
 
 }
 const ModalAddTTB = (props: Props) => {
@@ -22,22 +24,13 @@ const ModalAddTTB = (props: Props) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm()
     const { curData, open, handleModal, action, params } = props
-    const { count, data } = useSelector((state: any) => state.trangthietbi.trangthietbis)
-    const Loai_TTB = data
-        ? data.map((item: any) => ({
-            value: item.Ma_Loai_TTB,
-            label: item.Ten_Loai,
-        }))
-        : [];
-    console.log("Loai_TTB:", Loai_TTB);
     useEffect(() => {
         if (curData) {
             // console.log(curData)
             form.setFieldsValue({
                 Ten_TTB: curData?.Ten_TTB ? curData?.Ten_TTB : "",
-                Ten_Loai: curData?.Loai_TTB?.Ten_Loai ? curData?.Loai_TTB?.Ten_Loai : "",
-                TenPhong: curData?.PhongHoc?.TenPhong ? curData?.PhongHoc?.TenPhong : "",
-                GiangDuong: curData?.PhongHoc?.GiangDuong ? curData?.PhongHoc?.GiangDuong : "",
+                Ma_Loai_TTB: curData?.Ma_Loai_TTB ? curData?.Ma_Loai_TTB : "",
+                Ma_PH: curData?.Ma_PH ? curData?.Ma_PH : ""
             })
         }
     }, [curData, form])
@@ -46,7 +39,7 @@ const ModalAddTTB = (props: Props) => {
             if (action === "Add") {
                 const res = await TrangthietbiServices.create({
                     ...values,
-                    role_id: "U"
+                    // role_id: "U"
                 })
                 if (res.status) {
                     dispatch(actions.trangthietbiAction.loadData(params))
@@ -99,13 +92,13 @@ const ModalAddTTB = (props: Props) => {
                         </FormItem>
                     </Col>
                     {
-                        action === "Add" ? <Col span={12}>
+                        <Col span={12}>
                             <FormItem
                                 style={{ marginBottom: "4px" }}
                                 label={
                                     "Loại trang thiết bị"
                                 }
-                                name='Ten_Loai'
+                                name='Ma_Loai_TTB'
                                 rules={[
                                     {
                                         required: true,
@@ -113,10 +106,10 @@ const ModalAddTTB = (props: Props) => {
                                     }
                                 ]}
                             >
-                                <Select options={Loai_TTB} placeholder="Chọn loại" />
+                                <Select options={props.loai_ttbs} placeholder="Chọn loại trang thiét bị " />
 
                             </FormItem>
-                        </Col> : ""
+                        </Col>
                     }
                     <Col span={12}>
                         <FormItem
@@ -124,7 +117,7 @@ const ModalAddTTB = (props: Props) => {
                             label={
                                 "Phòng học "
                             }
-                            name='TenPhong'
+                            name='Ma_PH'
                             rules={[
                                 {
                                     required: true,
@@ -132,28 +125,11 @@ const ModalAddTTB = (props: Props) => {
                                 }
                             ]}
                         >
-                            <Input placeholder="Nhập tên phòng học" />
+                            <Select options={props.ten_PH} placeholder="Chọn tên phòng học" />
 
                         </FormItem>
                     </Col>
-                    <Col span={12}>
-                        <FormItem
-                            style={{ marginBottom: "4px" }}
-                            label={
-                                "Giảng đường"
-                            }
-                            name='GiangDuong'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập giảng đường'
-                                }
-                            ]}
-                        >
-                            <Input placeholder="Nhập tên giảng đường" />
 
-                        </FormItem>
-                    </Col>
 
 
                 </Row>
