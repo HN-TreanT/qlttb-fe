@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import useAction from "../../../redux/useActions";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
-import useDebounce from "../../../hooks/useDebounce";
 import dayjs from "dayjs";
 import { message } from "antd";
 import { canboServices } from "../../../utils/services/canbo";
-import { error } from "console";
+import LichLamViec from "./LichLamViec";
 interface DataType {
   key: number;
   NgaySinh: Date;
@@ -18,7 +17,6 @@ interface DataType {
 const DanhSachCanBo = () => {
   const dispatch = useDispatch()
   const actions = useAction()
-  const { count, data } = useSelector((state: any) => state.canbo.canbos)
   const loading = useSelector((state: any) => state.state.loadingState)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(9)
@@ -26,7 +24,25 @@ const DanhSachCanBo = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})
+  const [data, setData] = useState([])
+  const [count, setCount] = useState(0)
   const [messageApi, contextHolder] = message.useMessage();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getData = () => {
+    canboServices.get({
+      page: currentPage,
+      size: rowsPerPage,
+      ...(search && search !== "" && { Ten_CB: search })
+    }).then((res: any) => {
+      if (res.status) {
+        setCount(res.data.count)
+        setData(res.data.data)
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
 
   const hanldeModalAdd = () => {
     setOpenModalAdd(false)
@@ -106,6 +122,13 @@ const DanhSachCanBo = () => {
     }
   ]
 
+  // useEffect(() => {
+  //    dispatch(actions.CanboAction.loadData({
+  //     page : currentPage,
+  //     size: rowsPerPage,
+  //     ...(search && search !== "" && {Ten_CB : search})
+  //    }))
+  // }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
   useEffect(() => {
     dispatch(actions.CanboAction.loadData({
       page: currentPage,
@@ -195,22 +218,9 @@ const DanhSachCanBo = () => {
       />
 
     </Row>
-    <ModalAdd curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} params={
-      {
-        page: currentPage,
-        size: rowsPerPage,
-        ...(search && search !== "" && { Ten_CB: search })
-      }
-    }
+    <ModalAdd curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} getData={getData}
     />
-    <ModalAdd curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit}
-      params={
-        {
-          page: currentPage,
-          size: rowsPerPage,
-          ...(search && search !== "" && { Ten_CB: search })
-        }
-      }
+    <ModalAdd curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit} getData={getData}
     />
 
   </div>;

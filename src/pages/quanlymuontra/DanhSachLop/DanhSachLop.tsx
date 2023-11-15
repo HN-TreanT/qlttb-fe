@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Typography, Input} from "antd"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons' 
 import { ColumnProps } from "antd/es/table";
-import dayjs from "dayjs";
+import useAction from "../../../redux/useActions";
 import { message } from "antd";
-import {lichlamviceServices} from "../../../utils/services/lichlamviecService"
-import { useSelector } from "react-redux";
+import { lopServices } from "../../../utils/services/lopService";
+import { useSelector , useDispatch} from "react-redux";
 interface DataType {
   key: number;
-  CanBo: any;
-  CongViec: string;
-  Ngay: Date,
-  Kip: number;
+  Code: string;
+  TenLop: string;
 }
 
 
 
-const LichLamViec = () => {
+const DanhSachLop = () => {
+    const dispatch = useDispatch()
+    const actions = useAction()
   
   const loading = useSelector((state: any) => state.state.loadingState)
   const [currentPage, setCurrentPage] = useState(1)
@@ -26,19 +26,26 @@ const LichLamViec = () => {
   const [curData, setCurData] = useState({})
   const [count, setCount] = useState(0)
   const [data, setData] = useState([])
+  const [search, setSearch] = useState<string>('')
   const [messageApi, contextHolder] = message.useMessage();
 
   const getData = () => {
-    lichlamviceServices.get({
+    dispatch(actions.StateAction.loadingState(true))
+    lopServices.get({
       page: currentPage,
-      size: rowsPerPage
+      size: rowsPerPage,
+      ...(search && search !== " " && {search})
     }).then((res) => {
        if(res.status) {
           setCount(res.data.count)
           setData(res.data.data)
        }
+    dispatch(actions.StateAction.loadingState(false ))
+
     }).catch((err :any) => {
       console.log(err)
+    dispatch(actions.StateAction.loadingState(false))
+
     })
   }
   const hanldeModalAdd = () => {
@@ -56,7 +63,7 @@ const LichLamViec = () => {
 
   const hanldeDelete =async (id:number) => {
     try {
-       const res = await lichlamviceServices.deleteById(id)
+       const res = await lopServices.deleteById(id)
        if(res.status) {
           getData()
        }else {
@@ -78,30 +85,15 @@ const LichLamViec = () => {
        render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Cán bộ phụ trách",
-      dataIndex: "CanBo",
+      title: "Mã lớp ",
+      dataIndex: "Code",
       align:"center",
-      render: (text, record, index) => <span>{text?.Ten_CB ? text?.Ten_CB : ""}</span>
-    },
+    },   
     {
-      title: "Công việc",
-      dataIndex: "CongViec",
+      title:"Tên lớp",
+      dataIndex: "Ten_Lop",
       align: 'center',
-      width: '25%',
-    },
-    {
-      title: "Ngày ",
-      dataIndex: "Ngay",
-      align: 'center',
-      width: '20%',
-      render: (text, record, index) => <span>{text ? dayjs(text).format("DD/MM/YYYY") : ""}</span>
-    },
-    
-    {
-      title: "Kíp",
-      dataIndex: "Kip",
-      align: 'center',
-      width: '10%',
+    //   width: '10%',
     },
     {
         title: 'Thao tác',
@@ -109,7 +101,7 @@ const LichLamViec = () => {
         render: (record: any, index :any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
             
               <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer'}} />     
-                <Popconfirm onConfirm={() => hanldeDelete(record.Ma_CB)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
+                <Popconfirm onConfirm={() => hanldeDelete(record.Ma_Lop)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
                     <DeleteOutlined  style={{ color: 'red', cursor: 'point' }} />
                 </Popconfirm>
         </div>
@@ -118,7 +110,7 @@ const LichLamViec = () => {
 
   useEffect(() => {
      getData()
-  }, [ currentPage, rowsPerPage])
+  }, [ currentPage, rowsPerPage, search])
   return <div className="ds_canbo">
     {contextHolder}
       <Row>
@@ -126,11 +118,11 @@ const LichLamViec = () => {
           style={{ margin: "auto", marginLeft: 0 }}
           items={[
             {
-              title: "Quản lý cán bộ",
+              title: "Quản lý mượn trả",
             },
             {
               title: (
-                <span style={{ fontWeight: "bold" }}>Lịch làm việc</span>
+                <span style={{ fontWeight: "bold" }}>Lớp học</span>
               ),
             },
           ]}
@@ -151,8 +143,23 @@ const LichLamViec = () => {
       <Row>
         <Col span={6}>
           <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
-            <label style={{marginBottom:"4px"}}>Tên cán bộ</label>
+            <label style={{marginBottom:"4px"}}>Tên phòng</label>
             <Input
+                type="text"
+                placeholder="Tìm kiếm"
+                style={{ height: "34px" }}
+                onChange={(e) => {
+                    if (e.target.value === "") {
+                        setSearch('')
+                    }
+                }}
+                onKeyPress={(e: any) => {
+                    if (e.key === "Enter") {
+
+                        setSearch(e.target?.value)
+                        setCurrentPage(1)
+                    }
+                }}
             />
           </div>
         </Col>
@@ -197,4 +204,4 @@ const LichLamViec = () => {
 
 const ModalAdd = React.lazy(() => import("./ModalAdd"))
 
-export default LichLamViec;
+export default DanhSachLop;

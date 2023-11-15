@@ -5,12 +5,14 @@ import CanboReducer from "./canbo/reducer";
 import TrangThietBiReducer from "./trangthietbi/reducer";
 import loaittbReducer from "./LoaiTTB/reducer";
 import phonghocReducer from "./phonghoc/reducer";
+import LichLamViecReducer from "./lichlamviec/reducer";
 const rootReducer = {
    movie: AuthReducer,
    state: StateReducer,
    canbo: CanboReducer,
    trangthietbi: TrangThietBiReducer,
    loaittb: loaittbReducer,
-   phonghoc: phonghocReducer
+   phonghoc: phonghocReducer,
+   lichlamviec: LichLamViecReducer
 };
 export default rootReducer;

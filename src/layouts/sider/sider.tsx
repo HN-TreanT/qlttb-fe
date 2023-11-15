@@ -64,6 +64,7 @@ const menuItems = [
     ],
   },
 
+<<<<<<< HEAD
   {
     key: "muontra",
     label: "Quản lý mượn trả trang thiết bị",
@@ -108,6 +109,39 @@ const menuItems = [
     ],
   },
 ];
+=======
+    {
+      key: "muontra",
+      label: "Quản lý mượn trả ",
+      icon: (
+        <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
+      ),
+      children: [
+        {
+          key: RouterLinks.MUON_TRA,
+          label: "Mượn trả",
+        },
+        {
+          key: RouterLinks.LS_SU_DUNG_TTB,
+          label:"Lịch sử sử dụng",
+        },
+        {
+          key: RouterLinks.LICH_HOC_TAP,
+          label: "Lịch học tập",
+        },
+        {
+          key: RouterLinks.DANH_SACH_LOP,
+          label: "Danh sách lớp",
+        },
+        {
+          key: RouterLinks.DANH_SACH_PHONG,
+          label: "Danh sách phòng",
+        },
+      
+      ],
+    },
+  ];
+>>>>>>> f6bf3eab9d6bdc7542aa75c422f4d5f0c9e8a9e6
 const Sidebar = () => {
   const navigate = useNavigate();
   const onClick = (e: any) => {
