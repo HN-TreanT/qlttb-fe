@@ -35,6 +35,7 @@ const DanhSachCanBo = () => {
       if (res.status) {
         setCount(res.data.count)
         setData(res.data.data)
+
       }
     }).catch((err: any) => {
       console.log(err)
@@ -117,7 +118,8 @@ const DanhSachCanBo = () => {
 
   useEffect(() => {
     getData()
-  }, [currentPage, rowsPerPage])
+  }, [currentPage, rowsPerPage, search])
+
   return <div className="ds_canbo">
     {contextHolder}
     <Row>

@@ -1,6 +1,7 @@
 export const RouterLinks = {
   LOGIN: "/login",
   REGISTER: "/register",
+  HOME_PAGE:"/",
   CAN_BO: "/quanlycanbo/canbo",
   LICH_LAM_VIEC: "/quanlycanbo/lich_lam_viec",
   TRANG_THIET_BI: "/quanlyttb/trang_thiet_bi",

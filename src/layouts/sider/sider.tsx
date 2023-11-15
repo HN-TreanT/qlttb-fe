@@ -1,6 +1,6 @@
 import Sider from "antd/es/layout/Sider";
 import { Image, Menu } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.png'
 import { RouterLinks } from "../../const/RouterLinks";
 import {
@@ -19,6 +19,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import SubMenu from "antd/es/menu/SubMenu";
+import { memo } from "react";
 
 interface props {
   collapsed: any,
@@ -63,7 +64,6 @@ const menuItems = [
       },
     ],
   },
-
   {
     key: "muontra",
     label: "Quản lý mượn trả ",
@@ -91,17 +91,13 @@ const menuItems = [
         key: RouterLinks.DANH_SACH_PHONG,
         label: "Danh sách phòng",
       },
-
     ],
   },
 
 ];
-
-
 const Sidebar = () => {
   const navigate = useNavigate();
   const onClick = (e: any) => {
-    // console.log(e.key)
     navigate(e.key)
   }
   return (
@@ -115,11 +111,9 @@ const Sidebar = () => {
     }} width={300} trigger={null}>
       <Image src={logo} preview={false} style={{ padding: 5 }} />
       <Menu
-
         selectedKeys={['/' + window.location.pathname.split("/")[1] + '/' + window.location.pathname.split("/")[2]]}
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={['1']}
         items={menuItems}
         onClick={onClick}
       >
@@ -142,7 +136,7 @@ const Sidebar = () => {
                     key={childItem.key}
 
                   >
-                    {/* <Link to={childItem.url}>{childItem.label}</Link> */}
+                    {/* <Link to={childItem.key}>{childItem.label}</Link> */}
                     {item.label}
                   </Menu.Item>
                 ))}
@@ -155,7 +149,7 @@ const Sidebar = () => {
                 icon={item.icon}
               >
                 {item.label}
-                {/* <Link to={item.url}>{item.label}</Link> */}
+                {/* <Link to={item.key}>{item.label}</Link> */}
               </Menu.Item>
             );
           }
@@ -166,4 +160,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);
