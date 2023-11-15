@@ -6,7 +6,7 @@ import NotFound from "../pages/not-found/NotFound";
 import { RouterLinks } from "../const/RouterLinks";
 import DanhSachCanBo from "../pages/quanlycanbo/danhsachcanbo/DanhSachCanBo";
 import LichLamViec from "../pages/quanlycanbo/lichlamviec/LichLamViec";
-import TranThietBi from "../pages/quanlytrangthietbi/trangthietbij/TranThietBi";
+import TrangThietBi from "../pages/quanlytrangthietbi/trangthietbij/TrangThietBi";
 import LoaiTTB from "../pages/quanlytrangthietbi/LoaiTTB/LoaiTTB";
 import TinhTrangTTB from "../pages/quanlytrangthietbi/TinhTrangTTB/TinhTrangTTB";
 import LichSuSuDung from "../pages/quanlymuontra/LichSuSuDung/LichSuSuDung";
@@ -14,6 +14,7 @@ import LichHocTap from "../pages/quanlymuontra/LichHocTap/LichHocTap";
 import MuonTra from "../pages/quanlymuontra/MuonTra/MuonTra";
 import LichBaoDuong from "../pages/quanlybaoduong/lichbaoduong/LichBaoDuong";
 import ChatLuong from "../pages/quanlybaoduong/chatluongbaoduong/ChatLuong";
+import PhongHoc from "../pages/quanlymuontra/PhongHoc/PhongHoc";
 export const router = createBrowserRouter([
   {
     path: "login",
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: RouterLinks.TRANG_THIET_BI,
-        element: <TranThietBi />,
+        element: <TrangThietBi />,
       },
       {
         path: RouterLinks.LOAI_TTB,
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: RouterLinks.CHAT_LUONG,
         element: <ChatLuong />,
+      },
+      {
+        path: RouterLinks.PHONG_HOC,
+        element: <PhongHoc />,
       },
     ],
   },

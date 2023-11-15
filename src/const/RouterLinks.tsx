@@ -1,16 +1,17 @@
 export const RouterLinks = {
-  LOGIN:"/login",
-  REGISTER:"/register",
+  LOGIN: "/login",
+  REGISTER: "/register",
   CAN_BO: "/quanlycanbo/canbo",
-  LICH_LAM_VIEC:"/quanlycanbo/lich_lam_viec",
-  TRANG_THIET_BI:"/quanlyttb/trang_thiet_bi",
-  LOAI_TTB:"/quanlyttb/loai_ttb",
-  TINH_TRANG_TTB:"/quanlyttb/tinh_trang_ttb", 
-  LS_SU_DUNG_TTB:"/quanlysudungttb/ls_su_dung_ttb", 
-  LICH_HOC_TAP:"/quanlysudungttb/lich_hoc_tap", 
-  MUON_TRA:"/quanlysudungttb/muon_tra",
-  LICH_BAO_DUONG:"/quanlybaoduong/lich_bao_duong" ,
-  CHAT_LUONG:"/quanlybaoduong/chat_luong",
+  LICH_LAM_VIEC: "/quanlycanbo/lich_lam_viec",
+  TRANG_THIET_BI: "/quanlyttb/trang_thiet_bi",
+  LOAI_TTB: "/quanlyttb/loai_ttb",
+  TINH_TRANG_TTB: "/quanlyttb/tinh_trang_ttb",
+  LS_SU_DUNG_TTB: "/quanlysudungttb/ls_su_dung_ttb",
+  PHONG_HOC: "/quanlysudungttb/phong_hoc",
+  LICH_HOC_TAP: "/quanlysudungttb/lich_hoc_tap",
+  MUON_TRA: "/quanlysudungttb/muon_tra",
+  LICH_BAO_DUONG: "/quanlybaoduong/lich_bao_duong",
+  CHAT_LUONG: "/quanlybaoduong/chat_luong",
+
 
 };
-  

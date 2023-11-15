@@ -7,18 +7,18 @@ import { ColumnProps } from "antd/es/table";
 import useDebounce from "../../../hooks/useDebounce";
 import dayjs from "dayjs";
 import { message } from "antd";
-import { canboServices } from "../../../utils/services/canbo";
+import { TrangthietbiServices } from "../../../utils/services/trangthietbiServices";
 import { error } from "console";
 interface DataType {
   key: number;
-  NgaySinh: Date;
-  SoDienThoai: string;
-  Ten_CB: string;
+  NgayNhap: Date;
+  // SoDienThoai: string;
+  Ten_TTB: string;
 }
-const DanhSachCanBo = () => {
+const TrangThietBi = () => {
   const dispatch = useDispatch()
   const actions = useAction()
-  const { count, data } = useSelector((state: any) => state.canbo.canbos)
+  const { count, data } = useSelector((state: any) => state.trangthietbi.trangthietbis)
   const loading = useSelector((state: any) => state.state.loadingState)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(9)
@@ -27,7 +27,6 @@ const DanhSachCanBo = () => {
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})
   const [messageApi, contextHolder] = message.useMessage();
-
   const hanldeModalAdd = () => {
     setOpenModalAdd(false)
   }
@@ -43,12 +42,12 @@ const DanhSachCanBo = () => {
 
   const hanldeDelete = async (id: number) => {
     try {
-      const res = await canboServices.deleteById(id)
+      const res = await TrangthietbiServices.deleteById(id)
       if (res.status) {
-        dispatch(actions.CanboAction.loadData({
+        dispatch(actions.trangthietbiAction.loadData({
           page: currentPage,
           size: rowsPerPage,
-          ...(search && search !== "" && { Ten_CB: search })
+          ...(search && search !== "" && { Ten_TTB: search })
         }))
       } else {
         message.error(res.message)
@@ -69,29 +68,31 @@ const DanhSachCanBo = () => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Tên cán bộ",
-      dataIndex: "Ten_CB",
+      title: "Tên trang thiết bị",
+      dataIndex: "Ten_TTB",
       align: "center"
     },
     {
-      title: "Ngày sinh",
-      dataIndex: "NgaySinh",
+      title: "Loại",
+      dataIndex: "Loai_TTB",
+      render: (Loai_TTB) => <div>{Loai_TTB ? Loai_TTB.Ten_Loai : "Không có loại trang thiết bị này"}</div>,
+    },
+    {
+      title: "Phòng học",
+      dataIndex: "PhongHoc",
+      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.TenPhong : "Không có phòng học này"}</div>,
+    },
+    {
+      title: "Giảng đường",
+      dataIndex: "PhongHoc",
+      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.GiangDuong : "Không có giảng đường này"}</div>,
+    },
+    {
+      title: "Ngày nhập",
+      dataIndex: "NgayNhap",
       align: 'center',
       width: '20%',
       render: (text, record, index) => <span>{text ? dayjs(text).format("DD/MM/YYYY") : ""}</span>
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "SoDienThoai",
-      align: 'center',
-      width: '20%',
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "GioiTinh",
-      align: 'center',
-      width: '10%',
-      render: (text, record, index) => <span>{text === 1 ? "Nam" : "Nữ"}</span>
     },
     {
       title: 'Thao tác',
@@ -107,24 +108,25 @@ const DanhSachCanBo = () => {
   ]
 
   useEffect(() => {
-    dispatch(actions.CanboAction.loadData({
+    dispatch(actions.trangthietbiAction.loadData({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { Ten_CB: search })
+      ...(search && search !== "" && { Ten_TTB: search })
     }))
-  }, [actions.CanboAction, dispatch, currentPage, rowsPerPage, search])
-  return <div className="ds_canbo">
+  }, [actions.trangthietbiAction, dispatch, currentPage, rowsPerPage, search])
+  // console.log(data)
+  return <div className="ds_trangthietbi">
     {contextHolder}
     <Row>
       <Breadcrumb
         style={{ margin: "auto", marginLeft: 0 }}
         items={[
           {
-            title: "Quản lý cán bộ",
+            title: "Quản lý trang thiết bị",
           },
           {
             title: (
-              <span style={{ fontWeight: "bold" }}>Danh sách cán bộ</span>
+              <span style={{ fontWeight: "bold" }}>Danh sách trang thiết bị</span>
             ),
           },
         ]}
@@ -145,7 +147,7 @@ const DanhSachCanBo = () => {
     <Row>
       <Col span={6}>
         <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text>Tên cán bộ</Typography.Text>
+          <Typography.Text>Tên trang thiết bị</Typography.Text>
           <Input
             type="text"
             placeholder="Tìm kiếm"
@@ -199,7 +201,7 @@ const DanhSachCanBo = () => {
       {
         page: currentPage,
         size: rowsPerPage,
-        ...(search && search !== "" && { Ten_CB: search })
+        ...(search && search !== "" && { Ten_TTB: search })
       }
     }
     />
@@ -208,7 +210,7 @@ const DanhSachCanBo = () => {
         {
           page: currentPage,
           size: rowsPerPage,
-          ...(search && search !== "" && { Ten_CB: search })
+          ...(search && search !== "" && { Ten_TTB: search })
         }
       }
     />
@@ -216,6 +218,6 @@ const DanhSachCanBo = () => {
   </div>;
 };
 
-const ModalAdd = React.lazy(() => import("./ModalAddCanBo"))
+const ModalAdd = React.lazy(() => import("./ModalAddTTB"))
 
-export default DanhSachCanBo;
+export default TrangThietBi;

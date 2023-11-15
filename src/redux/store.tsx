@@ -2,7 +2,7 @@ import { legacy_createStore as createStore, combineReducers, applyMiddleware, co
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { createBrowserHistory } from "history";
-import { routerReducer } from "react-router-redux"; 
+import { routerReducer } from "react-router-redux";
 import createSagaMiddleware from "redux-saga";
 import reducers from "../redux/reducers";
 import rootSaga from "../redux/sagas";
