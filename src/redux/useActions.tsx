@@ -5,8 +5,9 @@ import { trangthietbiAction } from "./trangthietbi/actions"
 import { loaittbAction } from "./LoaiTTB/actions";
 import { phonghocAction } from "./phonghoc/actions";
 import { LichLamViecAction } from "./lichlamviec/actions";
+import { lichhoctapAction } from "./lichhoctap/actions";
 const useAction = () => {
-  const actions = { AuthActions, StateAction, CanboAction, trangthietbiAction, loaittbAction, phonghocAction, LichLamViecAction };
+  const actions = { AuthActions, StateAction, CanboAction, trangthietbiAction, loaittbAction, phonghocAction, LichLamViecAction, lichhoctapAction };
   return actions;
 };
 

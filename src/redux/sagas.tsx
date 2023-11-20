@@ -6,8 +6,9 @@ import llvSaga from "./lichlamviec/saga"
 import trangthietbiSaga from './trangthietbi/saga'
 import loaittbSaga from './LoaiTTB/saga'
 import phonghocSaga from './phonghoc/saga'
+import lichhoctapSaga from './lichhoctap/saga'
 export default function* rootSaga() {
-   yield all([authSaga(), stateSaga(), canboSaga(), trangthietbiSaga(), loaittbSaga(), phonghocSaga(), llvSaga()]);
+   yield all([authSaga(), stateSaga(), canboSaga(), trangthietbiSaga(), loaittbSaga(), phonghocSaga(), llvSaga(), lichhoctapSaga()]);
    yield all([]);
 
 }
