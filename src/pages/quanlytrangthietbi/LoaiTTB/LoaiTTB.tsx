@@ -130,8 +130,8 @@ const LoaiTTB = () => {
     </Row>
     <Row>
       <Col span={6}>
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text>Tên loại trang thiết bị</Typography.Text>
+        <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
+          <label style={{marginBottom:"4px"}}>Tên loại trang thiết bị</label>
           <Input
             type="text"
             placeholder="Tìm kiếm"
@@ -148,7 +148,7 @@ const LoaiTTB = () => {
               }
             }}
           />
-        </Space>
+        </div>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>

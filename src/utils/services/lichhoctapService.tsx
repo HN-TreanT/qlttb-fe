@@ -4,7 +4,7 @@ const api = CreateApiService();
 
 const get = (params: any) => {
   return api.makeAuthRequest({
-    url: `/api/lichhoc_lop/`,
+    url: `/api/lich-hoc`,
     method: "GET",
     params: params
   });
@@ -12,14 +12,14 @@ const get = (params: any) => {
 
 const getById = (id: Number) => {
   return api.makeAuthRequest({
-    url: `/api/lichhoc_lop/${id}`,
+    url: `/api/lich-hoc/${id}`,
     method: "GET",
   });
 };
 
 const create = (data: any) => {
   return api.makeAuthRequest({
-    url: "/api/lichhoc_lop",
+    url: "/api/lich-hoc",
     method: "POST",
     data: data,
   });
@@ -27,7 +27,7 @@ const create = (data: any) => {
 
 const update = (id: Number, data: any) => {
   return api.makeAuthRequest({
-    url: `/api/lichhoc_lop/${id}`,
+    url: `/api/lich-hoc/${id}`,
     method: "PUT",
     data: data,
   });
@@ -35,7 +35,7 @@ const update = (id: Number, data: any) => {
 
 const deleteById = (id: Number) => {
   return api.makeAuthRequest({
-    url: `/api/lichhoc_lop/${id}`,
+    url: `/api/lich-hoc/${id}`,
     method: "DELETE",
   });
 };

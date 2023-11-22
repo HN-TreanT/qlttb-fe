@@ -6,8 +6,9 @@ import { loaittbAction } from "./LoaiTTB/actions";
 import { phonghocAction } from "./phonghoc/actions";
 import { LichLamViecAction } from "./lichlamviec/actions";
 import { lichhoctapAction } from "./lichhoctap/actions";
+import { tinhtrangTTBActions } from "./tinhtragnTTB/actions";
 const useAction = () => {
-  const actions = { AuthActions, StateAction, CanboAction, trangthietbiAction, loaittbAction, phonghocAction, LichLamViecAction, lichhoctapAction };
+  const actions = { AuthActions, StateAction, CanboAction, trangthietbiAction, loaittbAction, phonghocAction, LichLamViecAction, lichhoctapAction, tinhtrangTTBActions };
   return actions;
 };
 

@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import { message } from "antd";
 import { canboServices } from "../../../utils/services/canbo";
 import LichLamViec from "./LichLamViec";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+
 interface DataType {
   key: number;
   NgaySinh: Date;
@@ -15,7 +17,7 @@ interface DataType {
   Ten_CB: string;
 }
 const DanhSachCanBo = () => {
-  const loading = useSelector((state: any) => state.state.loadingState)
+   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(9)
   const [search, setSearch] = useState<string>('')
@@ -27,6 +29,7 @@ const DanhSachCanBo = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const getData = () => {
+    setLoading(true)
     canboServices.get({
       page: currentPage,
       size: rowsPerPage,
@@ -37,8 +40,10 @@ const DanhSachCanBo = () => {
         setData(res.data.data)
 
       }
+      setLoading(false)
     }).catch((err: any) => {
       console.log(err)
+      setLoading(false)
     })
   }
 
@@ -151,8 +156,8 @@ const DanhSachCanBo = () => {
     </Row>
     <Row>
       <Col span={6}>
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text>Tên cán bộ</Typography.Text>
+        <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
+          <label style={{marginBottom:"4px"}}>Tìm kiếm</label>
           <Input
             type="text"
             placeholder="Tìm kiếm"
@@ -169,14 +174,14 @@ const DanhSachCanBo = () => {
               }
             }}
           />
-        </Space>
+        </div>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
     <Row>
 
       <Table
-        // loading={loading}
+         loading={loading}
         style={{ width: "100%" }}
         rowClassName={() => 'editable-row'}
         bordered

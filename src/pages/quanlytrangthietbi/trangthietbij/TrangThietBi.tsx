@@ -8,7 +8,10 @@ import useDebounce from "../../../hooks/useDebounce";
 import dayjs from "dayjs";
 import { message } from "antd";
 import { TrangthietbiServices } from "../../../utils/services/trangthietbiServices";
+import { loaittbServices } from "../../../utils/services/loaittbSevices";
+import { phonghocServices } from "../../../utils/services/phonghocSevices";
 import { error } from "console";
+import LichSuTinhTrang from "./LichSuTinhTrang";
 interface DataType {
   key: number;
   NgayNhap: Date;
@@ -16,8 +19,7 @@ interface DataType {
   Ten_TTB: string;
 
 }
-import { loaittbServices } from "../../../utils/services/loaittbSevices";
-import { phonghocServices } from "../../../utils/services/phonghocSevices";
+
 const TrangThietBi = () => {
   const dispatch = useDispatch()
   const actions = useAction()
@@ -157,7 +159,7 @@ const TrangThietBi = () => {
     }
   ]
   useEffect(() => {
-    getLoaiTtb(),
+      getLoaiTtb()
       getPhonghoc()
   }, [])
 
@@ -200,8 +202,8 @@ const TrangThietBi = () => {
     </Row>
     <Row>
       <Col span={6}>
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text>Tên trang thiết bị</Typography.Text>
+        <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
+          <label style={{marginBottom:"4px"}}>Tên trang thiết bị</label>
           <Input
             type="text"
             placeholder="Tìm kiếm"
@@ -218,7 +220,7 @@ const TrangThietBi = () => {
               }
             }}
           />
-        </Space>
+        </div>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
@@ -229,8 +231,19 @@ const TrangThietBi = () => {
         style={{ width: "100%" }}
         rowClassName={() => 'editable-row'}
         bordered
-        dataSource={data}
+        dataSource={data.map((item: any) => {
+          return {
+            ...item,
+            key: item.Ma_TTB
+          }
+        })}
         columns={columns}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <LichSuTinhTrang  ttb={record} />
+          },
+          
+        }}
         pagination={{
           current: currentPage,
           pageSize: rowsPerPage,

@@ -26,6 +26,7 @@ const LichLamViec = () => {
   const [curData, setCurData] = useState({})
   const [count, setCount] = useState(0)
   const [data, setData] = useState([])
+  const [search, setSearch] = useState('')
   const [messageApi, contextHolder] = message.useMessage();
 
   const getData = () => {
@@ -151,8 +152,22 @@ const LichLamViec = () => {
       <Row>
         <Col span={6}>
           <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
-            <label style={{marginBottom:"4px"}}>Tên cán bộ</label>
+            <label style={{marginBottom:"4px"}}>Tìm kiếm</label>
             <Input
+                type="text"
+                placeholder="Tìm kiếm"
+                style={{ height: "34px" }}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setSearch('')
+                  }
+                }}
+                onKeyPress={(e: any) => {
+                  if (e.key === "Enter") {
+                    setSearch(e.target?.value)
+                    setCurrentPage(1)
+                  }
+                }}
             />
           </div>
         </Col>

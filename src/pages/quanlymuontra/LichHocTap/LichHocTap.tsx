@@ -91,37 +91,33 @@ const LichHocTap = () => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Tên lớp học",
-      dataIndex: "Lop",
-      align: "center",
-      render: (Lop) => <div>{Lop ? Lop.Ten_Lop : "Không có lớp này"}</div>,
+      title: "Ngày học",
+      dataIndex: "NgayHoc",
+      align: 'center',
+      //   width: '10%',
+      render: (NgayHoc) => <span>{NgayHoc ? dayjs(NgayHoc).format("DD/MM/YYYY") : ""}</span>
     },
     {
       title: "Phòng học",
-      dataIndex: "TenPhong",
+      dataIndex: "PhongHoc",
+      align: 'center',
+      render: (PhongHoc) => <span>{PhongHoc ? PhongHoc?.TenPhong : ""}</span>
+      
+    },
+    {
+      title: "Thời gian bắt đầu",
+      dataIndex: "TG_BD",
       align: "center",
+      // width: '20%',
     },
+  
     {
-      title: "ngày học",
-      dataIndex: "LichHoc",
+      title: "Thời gian kết thúc",
+      dataIndex: "TG_KT",
       align: 'center',
-      //   width: '10%',
-      render: (LichHoc) => <span>{LichHoc ? dayjs(LichHoc.NgayHoc).format("DD/MM/YYYY") : ""}</span>
+      // width: '20%',
     },
-    {
-      title: "thời gian bắt đầu",
-      dataIndex: "LichHoc",
-      align: 'center',
-      width: '20%',
-      render: (LichHoc) => <div>{LichHoc ? LichHoc.TG_BD : "Không có lớp này"}</div>,
-    },
-    {
-      title: "thời gian kết thúc",
-      dataIndex: "LichHoc",
-      align: 'center',
-      width: '20%',
-      render: (LichHoc) => <div>{LichHoc ? LichHoc.TG_KT : "Không có lớp này"}</div>,
-    },
+   
     {
       title: 'Thao tác',
       width: '108px',
@@ -220,14 +216,14 @@ const LichHocTap = () => {
       />
 
     </Row>
-    {/* <ModalAdd curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} getData={getData}
+    <ModalLichHoc curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} getData={getData}
       />
-      <ModalAdd curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit} getData={getData}
-      /> */}
+      <ModalLichHoc curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit} getData={getData}
+      />  
 
   </div>;
 };
 
-// const ModalAdd = React.lazy(() => import("./ModalAdd"))
+const ModalLichHoc = React.lazy(() => import("./ModalLichHoc"))
 
 export default LichHocTap;
