@@ -8,6 +8,7 @@ import phonghocReducer from "./phonghoc/reducer";
 import LichLamViecReducer from "./lichlamviec/reducer";
 import lichhoctapReducer from "./lichhoctap/reducer";
 import TinhTrangTTBReducer from "./tinhtragnTTB/reducer";
+import muontraReducer from "./muontra/reducer";
 const rootReducer = {
    movie: AuthReducer,
    state: StateReducer,
@@ -17,6 +18,7 @@ const rootReducer = {
    phonghoc: phonghocReducer,
    lichlamviec: LichLamViecReducer,
    lichhoctap: lichhoctapReducer,
-   tinhtrangttb: TinhTrangTTBReducer
+   tinhtrangttb: TinhTrangTTBReducer,
+   muontra: muontraReducer
 };
 export default rootReducer;

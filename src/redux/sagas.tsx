@@ -8,8 +8,9 @@ import loaittbSaga from './LoaiTTB/saga'
 import phonghocSaga from './phonghoc/saga'
 import lichhoctapSaga from './lichhoctap/saga'
 import tinhtrangTTBSaga from './tinhtragnTTB/saga'
+import muontraSaga from './muontra/saga'
 export default function* rootSaga() {
-   yield all([authSaga(), stateSaga(), canboSaga(), trangthietbiSaga(), loaittbSaga(), phonghocSaga(), llvSaga(), lichhoctapSaga(), tinhtrangTTBSaga()]);
+   yield all([authSaga(), stateSaga(), canboSaga(), trangthietbiSaga(), loaittbSaga(), phonghocSaga(), llvSaga(), lichhoctapSaga(), tinhtrangTTBSaga(), muontraSaga()]);
    yield all([]);
 
 }
