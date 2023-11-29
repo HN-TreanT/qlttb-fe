@@ -19,18 +19,18 @@ function DebounceSelect<
   const fetchRef = useRef(0);
 
   const debounceFetcher = useMemo(() => {
-    const loadOptions = (value: string) => {
-      const data = initOption?.filter((option: any) => (option?.label ?? '').toLowerCase().includes(value.toLowerCase()))
+    const loadOptions = (value: string) => {  
+      const data = initOption.filter((option: any) => (option?.label ?? '').toLowerCase().includes(value.toLowerCase()))
       if (data.length > 0) {
         setOptions(data)
       }
-      else {
+      else {  
         fetchRef.current += 1;
         const fetchId = fetchRef.current;
         setOptions([]);
         setFetching(true);
         fetchOptions(value).then((newOptions) => {
-          console.log(value)
+          
           if (fetchId !== fetchRef.current) {
             // for fetch callback order
             return;

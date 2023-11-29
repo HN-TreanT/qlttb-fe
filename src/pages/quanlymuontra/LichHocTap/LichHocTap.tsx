@@ -7,15 +7,17 @@ import { message } from "antd";
 import { lichhoctapServices } from "../../../utils/services/lichhoctapService";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
-import PhongHoc from "../PhongHoc/PhongHoc";
-import { phonghocServices } from "../../../utils/services/phonghocSevices";
+import { lopServices } from "../../../utils/services/lopService";
+import LopThamGia from "./LopThamGia";
 interface DataType {
+  Ma_LH: any;
   key: number;
   TenPhong: string;
   Lop: string;
   NgayHoc: Date;
   TG_BD: Date;
   TG_KT: Date;
+  LichHoc_Lop :any[]
 }
 
 
@@ -26,6 +28,7 @@ const LichHocTap = () => {
 
   const loading = useSelector((state: any) => state.state.loadingState)
   const [currentPage, setCurrentPage] = useState(1)
+  const [phongHocs, setPhongHocs] = useState([])
   const [rowsPerPage, setRowsPerpage] = useState(9)
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
@@ -33,8 +36,32 @@ const LichHocTap = () => {
   const [count, setCount] = useState(0)
   const [data, setData] = useState([])
   const [search, setSearch] = useState<string>('')
+  const [lops, setLops]= useState([])
   const [messageApi, contextHolder] = message.useMessage();
 
+
+
+  const getLops = () => {
+    lopServices.get({
+      page : 1,
+      size : 50
+    }).then((res) => {
+        if(res.status) {
+          const temp = res?.data.data.map((item: any) => {
+            return {
+              ...item,
+              value:item?.Ma_Lop,
+              label: item?.Ten_Lop
+
+            }
+          })
+          setLops(temp)
+        }
+        
+    }).catch((err:any) => {
+      console.log(err)
+    } )
+  }
   const getData = () => {
     dispatch(actions.StateAction.loadingState(true))
     lichhoctapServices.get({
@@ -42,9 +69,18 @@ const LichHocTap = () => {
       size: rowsPerPage,
       ...(search && search !== " " && { search })
     }).then((res) => {
+
       if (res.status) {
+        const temp = res.data.data.map((item:any) => {
+          return {
+            ...item,
+            id_lops: item.LichHoc_Lop.map((lh_lop: any) => lh_lop.Ma_Lop)
+          }
+        })
         setCount(res.data.count)
-        setData(res.data.data)
+        // setData(res.data.data)
+        setData(temp)
+
       }
       dispatch(actions.StateAction.loadingState(false))
 
@@ -124,15 +160,27 @@ const LichHocTap = () => {
       render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
 
         <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
-        <Popconfirm onConfirm={() => hanldeDelete(record.Ma_PH)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
+        <Popconfirm onConfirm={() => hanldeDelete(record.Ma_LH)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
           <DeleteOutlined style={{ color: 'red', cursor: 'point' }} />
         </Popconfirm>
       </div>
     }
   ]
 
+
+  useEffect(() => {
+    getLops()
+  }, [])
+  useEffect(() => {
+    dispatch(actions.phonghocAction.loadData({
+      page: 1,
+      size: 100,
+    })) 
+  }, [])
+
   useEffect(() => {
     getData()
+   
   }, [currentPage, rowsPerPage, search])
   return <div className="ds_canbo">
     {contextHolder}
@@ -194,8 +242,19 @@ const LichHocTap = () => {
         style={{ width: "100%" }}
         rowClassName={() => 'editable-row'}
         bordered
-        dataSource={data}
+        dataSource={data.map((item :any) => {
+          return {
+            ...item,
+            key: item?.Ma_LH
+          }
+        })}
         columns={columns}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <LopThamGia  Ma_LH={record?.Ma_LH}  />
+          },
+          
+        }}
         pagination={{
           current: currentPage,
           pageSize: rowsPerPage,
@@ -216,9 +275,9 @@ const LichHocTap = () => {
       />
 
     </Row>
-    <ModalLichHoc curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} getData={getData}
+    <ModalLichHoc lops={lops} curData={curData} action="Add" handleModal={hanldeModalAdd} open={openModalAdd} getData={getData}
       />
-      <ModalLichHoc curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit} getData={getData}
+      <ModalLichHoc lops={lops} curData={curData} action="Edit" handleModal={handleModalEdit} open={openModalEdit} getData={getData}
       />  
 
   </div>;

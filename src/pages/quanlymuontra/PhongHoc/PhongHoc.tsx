@@ -40,7 +40,7 @@ const PhongHoc = () => {
         setCurData(data)
         setOpenModalEdit(true)
     }
-    console.log(data)
+
     const hanldeDelete = async (id: number) => {
         try {
             const res = await phonghocServices.deleteById(id)
@@ -105,7 +105,7 @@ const PhongHoc = () => {
             ...(search && search !== "" && { TenPhong: search })
         }))
     }, [actions.phonghocAction, dispatch, currentPage, rowsPerPage, search])
-    console.log(data)
+    
     return <div className="ds_phonghoc">
         {contextHolder}
         <Row>

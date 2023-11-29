@@ -5,7 +5,8 @@ import { phonghocServices } from "../../utils/services/phonghocSevices";
 
 function* saga_loadData() {
     try {
-        let _params: Promise<any> = yield select((state: any) => state.phonghocAction.params)
+      
+        let _params: Promise<any> = yield select((state: any) => state.phonghoc.params)
         let params: any = _params
         yield put(stateActions.action.loadingState(true))
         let _response: Promise<any> = yield phonghocServices.get({
