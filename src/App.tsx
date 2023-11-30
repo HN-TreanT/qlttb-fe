@@ -24,6 +24,7 @@ import DanhSachLop from './pages/quanlymuontra/DanhSachLop/DanhSachLop';
 import DanhSachPhong from './pages/quanlymuontra/DanhSachPhong/DanhSachPhong';
 
 import Layout from './layouts/Layout';
+import NotFound from './pages/not-found/NotFound';
 function App() {
    return (
       <Provider store={store}>
@@ -35,6 +36,7 @@ function App() {
                      <Routes>
                         <Route path={RouterLinks.LOGIN} element={<Login />} />
                         <Route path={RouterLinks.REGISTER} element={<Register />} />
+                        <Route path="*" element={<NotFound />} />
                         <Route path={RouterLinks.HOME_PAGE} element={<Layout />}>
                            <Route path={RouterLinks.CAN_BO} element={<Suspense fallback={null}><DanhSachCanBo /></Suspense>} />
                            <Route path={RouterLinks.LICH_LAM_VIEC} element={<Suspense fallback={null}><LichLamViec /></Suspense>} />
@@ -49,7 +51,6 @@ function App() {
                            <Route path={RouterLinks.DANH_SACH_LOP} element={<Suspense fallback={null}><DanhSachLop /></Suspense>} />
                            <Route path={RouterLinks.DANH_SACH_PHONG} element={<Suspense fallback={null}><DanhSachPhong /></Suspense>} />
                            <Route path={RouterLinks.LICH_HOC_TAP} element={<Suspense fallback={null}><LichHocTap /></Suspense>} />
-
                         </Route>
 
                      </Routes>

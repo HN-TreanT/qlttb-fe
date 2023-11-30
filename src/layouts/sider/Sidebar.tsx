@@ -27,7 +27,7 @@ interface props {
 }
 const menuItems = [
   {
-    key: "qlcb",
+    key: "quanlycanbo",
     label: "Quản lý cán bộ",
     icon: (
       <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
@@ -44,7 +44,7 @@ const menuItems = [
     ],
   },
   {
-    key: "qlttb",
+    key: "quanlyttb",
     label: "Quản lý trang thiết bị",
     icon: (
       <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
@@ -65,7 +65,7 @@ const menuItems = [
     ],
   },
   {
-    key: "muontra",
+    key: "quanlysudungttb",
     label: "Quản lý mượn trả ",
     icon: (
       <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
@@ -79,6 +79,17 @@ const menuItems = [
         key: RouterLinks.LS_SU_DUNG_TTB,
         label: "Lịch sử sử dụng",
       },
+     
+    ],
+  },
+
+  {
+    key: "quanlychung",
+    label: "Quản lý chung ",
+    icon: (
+      <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
+    ),
+    children: [
       {
         key: RouterLinks.LICH_HOC_TAP,
         label: "Lịch học tập",
@@ -112,6 +123,7 @@ const Sidebar = () => {
       <Image src={logo} preview={false} style={{ padding: 5 }} />
       <Menu
         selectedKeys={['/' + window.location.pathname.split("/")[1] + '/' + window.location.pathname.split("/")[2]]}
+        defaultOpenKeys ={[window.location.pathname.split("/")[1]]}
         theme="dark"
         mode="inline"
         items={menuItems}
@@ -123,6 +135,7 @@ const Sidebar = () => {
             return (
               <SubMenu
                 key={item.key}
+              
                 title={
                   <span>
                     {" "}

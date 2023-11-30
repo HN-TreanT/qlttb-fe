@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Typography, Input } from "antd"
+import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select } from "antd"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
 import useAction from "../../../redux/useActions";
@@ -27,8 +27,8 @@ const LichHocTap = () => {
   const actions = useAction()
 
   const loading = useSelector((state: any) => state.state.loadingState)
+  const phongshoc = useSelector((state :any) => state.phonghoc.phonghocs)
   const [currentPage, setCurrentPage] = useState(1)
-  const [phongHocs, setPhongHocs] = useState([])
   const [rowsPerPage, setRowsPerpage] = useState(9)
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
@@ -38,6 +38,8 @@ const LichHocTap = () => {
   const [search, setSearch] = useState<string>('')
   const [lops, setLops]= useState([])
   const [messageApi, contextHolder] = message.useMessage();
+
+  const [searchPhongHoc, setSearchPhongHoc] = useState<any>()
 
 
 
@@ -67,7 +69,8 @@ const LichHocTap = () => {
     lichhoctapServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== " " && { search })
+      ...(search && search !== " " && { search }),
+      ...(searchPhongHoc && {Ma_PH: searchPhongHoc})
     }).then((res) => {
 
       if (res.status) {
@@ -181,7 +184,9 @@ const LichHocTap = () => {
   useEffect(() => {
     getData()
    
-  }, [currentPage, rowsPerPage, search])
+  }, [currentPage, rowsPerPage, search, searchPhongHoc])
+  const filterOption = (input: string, option?: { label: string; value: string }) =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
   return <div className="ds_canbo">
     {contextHolder}
     <Row>
@@ -212,25 +217,21 @@ const LichHocTap = () => {
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
     <Row>
-      <Col span={6}>
+      <Col span={4}>
         <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
-          <label style={{ marginBottom: "4px" }}>Tên phòng</label>
-          <Input
-            type="text"
-            placeholder="Tìm kiếm"
-            style={{ height: "34px" }}
-            onChange={(e) => {
-              if (e.target.value === "") {
-                setSearch('')
+          <label style={{ marginBottom: "4px" }}>Phòng học</label>
+          <Select
+            onChange={(value) => setSearchPhongHoc(value)}
+           style={{width:"100%"}} allowClear showSearch 
+          options={Array.isArray(phongshoc?.data) ? phongshoc?.data.map((item: any) => {
+              return {
+                  ...item,
+                  value: item?.Ma_PH ,
+                  label: item?.TenPhong
               }
-            }}
-            onKeyPress={(e: any) => {
-              if (e.key === "Enter") {
-                setSearch(e.target?.value)
-                setCurrentPage(1)
-              }
-            }}
-          />
+          }) : []} placeholder="Chọn  phòng học"
+              filterOption={filterOption}
+              />
         </div>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
