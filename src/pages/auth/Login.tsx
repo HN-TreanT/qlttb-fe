@@ -16,7 +16,6 @@ const Login = () => {
   const onFinish =async (value: any) => {
       try {
          const res = await authServices.login(value);
-         console.log(res)
          if(res.status) {
             dispatch(actions.AuthActions.userInfo(res.data))
             localStorage.setItem("username", res.data.TaiKhoan)

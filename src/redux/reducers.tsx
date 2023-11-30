@@ -10,7 +10,7 @@ import lichhoctapReducer from "./lichhoctap/reducer";
 import TinhTrangTTBReducer from "./tinhtragnTTB/reducer";
 import muontraReducer from "./muontra/reducer";
 const rootReducer = {
-   movie: AuthReducer,
+   auth: AuthReducer,
    state: StateReducer,
    canbo: CanboReducer,
    trangthietbi: TrangThietBiReducer,

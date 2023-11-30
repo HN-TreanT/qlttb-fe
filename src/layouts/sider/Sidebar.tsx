@@ -27,6 +27,13 @@ interface props {
 }
 const menuItems = [
   {
+    key: RouterLinks.MUON_TRANG_TB,
+    label: "Mượn trả trang thiết bị",
+    icon: (
+      <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
+    ),
+  },
+  {
     key: "quanlycanbo",
     label: "Quản lý cán bộ",
     icon: (

@@ -22,6 +22,7 @@ import LichBaoDuong from './pages/quanlybaoduong/lichbaoduong/LichBaoDuong';
 import ChatLuong from './pages/quanlybaoduong/chatluongbaoduong/ChatLuong';
 import DanhSachLop from './pages/quanlymuontra/DanhSachLop/DanhSachLop';
 import DanhSachPhong from './pages/quanlymuontra/DanhSachPhong/DanhSachPhong';
+import MuonTTB from './pages/MuonTra/MuonTra';
 
 import Layout from './layouts/Layout';
 import NotFound from './pages/not-found/NotFound';
@@ -38,6 +39,7 @@ function App() {
                         <Route path={RouterLinks.REGISTER} element={<Register />} />
                         <Route path="*" element={<NotFound />} />
                         <Route path={RouterLinks.HOME_PAGE} element={<Layout />}>
+                           <Route path={RouterLinks.MUON_TRANG_TB} element={<Suspense fallback={null}><MuonTTB /></Suspense>} />
                            <Route path={RouterLinks.CAN_BO} element={<Suspense fallback={null}><DanhSachCanBo /></Suspense>} />
                            <Route path={RouterLinks.LICH_LAM_VIEC} element={<Suspense fallback={null}><LichLamViec /></Suspense>} />
                            <Route path={RouterLinks.TRANG_THIET_BI} element={<Suspense fallback={null}><TrangThietBi /></Suspense>} />
