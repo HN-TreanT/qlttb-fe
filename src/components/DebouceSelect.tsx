@@ -17,7 +17,6 @@ function DebounceSelect<
   const [fetching, setFetching] = useState(false);
   const [options, setOptions] = useState<ValueType[]>([...initOption]);
   const fetchRef = useRef(0);
-
   const debounceFetcher = useMemo(() => {
     const loadOptions = (value: string) => {  
       const data = initOption.filter((option: any) => (option?.label ?? '').toLowerCase().includes(value.toLowerCase()))

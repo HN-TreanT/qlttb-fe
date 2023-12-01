@@ -21,7 +21,7 @@ const Login = () => {
             localStorage.setItem("username", res.data.TaiKhoan)
             localStorage.setItem("token", res.data.access_token)
             localStorage.setItem("refresh_token", res.data.refresh_token)
-            navigate(RouterLinks.CAN_BO)
+            navigate(RouterLinks.MUON_TRANG_TB)
          }else {
           message.error(res.message)
          }

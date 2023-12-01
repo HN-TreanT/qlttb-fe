@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Table, Button, Row, Divider, Popconfirm, message } from "antd";
+import { Table, Button, Row, Divider, Popconfirm, message, Tag } from "antd";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import { lichsusudungServices } from "../../utils/services/lichsususungService";
@@ -91,12 +91,12 @@ const ChiTietMuonTra = (props: props) => {
           title: "Trạng thái",
           dataIndex: "TrangThai",
           align: 'center',
+         render: (TrangThai) => <div>{TrangThai === 0 ?  <Tag color="geekblue" >Đã trả</Tag> : <Tag color="volcano">Đang mượn</Tag>}</div>,
 
-          render: (TrangThai) => <div>{TrangThai === 0 ? "Đã trả" : "Đang mượn"}</div>,
         },
         {
-          title: "Chú thích",
-          dataIndex: "ChuThich",
+          title: "Nhận xét",
+          dataIndex: "NhanXet",
         
           width: '20%',
 

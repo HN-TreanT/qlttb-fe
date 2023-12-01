@@ -78,10 +78,10 @@ const menuItems = [
       <ShopOutlined style={{ fontSize: "1.3rem", paddingRight: "0.5rem" }} />
     ),
     children: [
-      {
-        key: RouterLinks.MUON_TRA,
-        label: "Mượn trả",
-      },
+      // {
+      //   key: RouterLinks.MUON_TRA,
+      //   label: "Mượn trả",
+      // },
       {
         key: RouterLinks.LS_SU_DUNG_TTB,
         label: "Lịch sử sử dụng",

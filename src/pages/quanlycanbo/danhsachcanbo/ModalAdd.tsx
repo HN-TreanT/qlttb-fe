@@ -19,33 +19,7 @@ interface Props {
 
 }
 
-interface UserValue {
-  label: string;
-  value: string;
-}
 
-async function fetchCanbo(search: string): Promise<UserValue[]> {
-  return canboServices.get( {
-      page : 1,
-      size : 100,
-      ...(search && search !== "" && {Ten_CB : search})
-    }
-  ).then((res) => {
-   
-    if(res.status) {
-        const temp = res?.data?.data.map((item: any) => {
-          return {
-            label: item?.Ten_CB,
-            value: item?.Ma_CB
-          }
-      })
-      return temp
-    }else {
-      return []
-    }
-    
-  }).catch((err :any) => console.log(err))
-}
 
  const ModalAdd = (props: Props) => {
   const dispatch = useDispatch()

@@ -29,8 +29,8 @@ const ModalAddTTB = (props: Props) => {
             // console.log(curData)
             form.setFieldsValue({
                 Ten_TTB: curData?.Ten_TTB ? curData?.Ten_TTB : "",
-                Ma_Loai_TTB: curData?.Ma_Loai_TTB ? curData?.Ma_Loai_TTB : "",
-                Ma_PH: curData?.Ma_PH ? curData?.Ma_PH : ""
+                Ma_Loai_TTB: curData?.Ma_Loai_TTB ? curData?.Ma_Loai_TTB : undefined,
+                Ma_PH: curData?.Ma_PH ? curData?.Ma_PH : undefined
             })
         }
     }, [curData, form])
@@ -39,7 +39,6 @@ const ModalAddTTB = (props: Props) => {
             if (action === "Add") {
                 const res = await TrangthietbiServices.create({
                     ...values,
-                    // role_id: "U"
                 })
                 if (res.status) {
                     dispatch(actions.trangthietbiAction.loadData(params))
@@ -64,6 +63,8 @@ const ModalAddTTB = (props: Props) => {
         }
 
     }
+    const filterOption = (input: string, option?: { label: string; value: string }) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
     return <Fragment>
         {contextHolder}
         <Modal
@@ -118,14 +119,9 @@ const ModalAddTTB = (props: Props) => {
                                 "Phòng học "
                             }
                             name='Ma_PH'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập tên phòng học '
-                                }
-                            ]}
+                
                         >
-                            <Select options={props.ten_PH} placeholder="Chọn tên phòng học" />
+                            <Select showSearch filterOption={filterOption} allowClear options={props.ten_PH} placeholder="Chọn phòng học" />
 
                         </FormItem>
                     </Col>

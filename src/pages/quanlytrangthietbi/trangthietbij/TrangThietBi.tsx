@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Table, Breadcrumb, Divider, Popconfirm, Space, Tooltip, Button, Select, Typography, Input } from "antd"
+import {  Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Input } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import useAction from "../../../redux/useActions";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
-import useDebounce from "../../../hooks/useDebounce";
 import dayjs from "dayjs";
 import { message } from "antd";
 import { TrangthietbiServices } from "../../../utils/services/trangthietbiServices";
 import { loaittbServices } from "../../../utils/services/loaittbSevices";
 import { phonghocServices } from "../../../utils/services/phonghocSevices";
-import { error } from "console";
 import LichSuTinhTrang from "./LichSuTinhTrang";
 interface DataType {
   key: number;
@@ -33,6 +31,7 @@ const TrangThietBi = () => {
   const [curData, setCurData] = useState({})
   const [loaiTTb, setLoaiTTB] = useState([])
   const [phongHoc, setPhongHoc] = useState([])
+  const [maLoaiTTB, setMaLoaiTTB] = useState<any>()
   const [messageApi, contextHolder] = message.useMessage();
   const hanldeModalAdd = () => {
     setOpenModalAdd(false)
@@ -167,9 +166,10 @@ const TrangThietBi = () => {
     dispatch(actions.trangthietbiAction.loadData({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { Ten_TTB: search })
+      ...(search && search !== "" && { Ten_TTB: search }),
+      ...(maLoaiTTB && {Ma_Loai_TTB: maLoaiTTB})
     }))
-  }, [actions.trangthietbiAction, dispatch, currentPage, rowsPerPage, search])
+  }, [actions.trangthietbiAction, dispatch, currentPage, rowsPerPage, search, maLoaiTTB])
   // console.log(data)
   return <div className="ds_trangthietbi">
     {contextHolder}
@@ -200,7 +200,7 @@ const TrangThietBi = () => {
       </Button>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
-    <Row>
+    <Row gutter={15}>
       <Col span={6}>
         <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
           <label style={{marginBottom:"4px"}}>Tên trang thiết bị</label>
@@ -221,6 +221,10 @@ const TrangThietBi = () => {
             }}
           />
         </div>
+      </Col>
+      <Col style={{display:"flex", justifyContent:"center", flexDirection:"column"}} span={6}>
+          <div style={{alignSelf:"flex-start", marginBottom:"4px"}}>Loại trang thiết bị</div>
+          <Select  style={{width:"100%", alignSelf:"flex-start"}} options={loaiTTb} placeholder="Loại trang thiết bị" allowClear onChange={(value) => setMaLoaiTTB(value) }/>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>

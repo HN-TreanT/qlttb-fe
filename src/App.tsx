@@ -40,7 +40,7 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                         <Route path={RouterLinks.HOME_PAGE} element={<Layout />}>
                            <Route path={RouterLinks.MUON_TRANG_TB} element={<Suspense fallback={null}><MuonTTB /></Suspense>} />
-                           <Route path={RouterLinks.CAN_BO} element={<Suspense fallback={null}><DanhSachCanBo /></Suspense>} />
+                           <Route  path={RouterLinks.CAN_BO} element={<Suspense fallback={null}><DanhSachCanBo /></Suspense>} />
                            <Route path={RouterLinks.LICH_LAM_VIEC} element={<Suspense fallback={null}><LichLamViec /></Suspense>} />
                            <Route path={RouterLinks.TRANG_THIET_BI} element={<Suspense fallback={null}><TrangThietBi /></Suspense>} />
                            <Route path={RouterLinks.LOAI_TTB} element={<Suspense fallback={null}><LoaiTTB /></Suspense>} />

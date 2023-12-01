@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Input } from "antd"
-import { useDispatch, useSelector } from "react-redux";
+import { Row, Table, Breadcrumb, Divider, Popconfirm, Button, Tooltip, Tag } from "antd"
+import { useDispatch } from "react-redux";
 import useAction from "../../redux/useActions";
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, UndoOutlined } from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
 import { message } from "antd";
 import { muontraServices } from "../../utils/services/muontraService";
 import { TrangthietbiServices } from "../../utils/services/trangthietbiServices";
 import { lichhoctapServices } from "../../utils/services/lichhoctapService";
 import ChiTietMuonTra from "./ChiTietMuonTra";
+import { canboServices } from "../../utils/services/canbo";
+import Filter from "./Filter";
 interface DataType {
   key: number;
   updatedAt: Date;
   Ten_Loai: string;
   Ma_LSM : any
 }
+
+
 const MuonTra = () => {
   const dispatch = useDispatch()
   const actions = useAction()
-  const loading = useSelector((state: any) => state.state.loadingState)
+  const [loading, setLoading]= useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(9)
-  const [search, setSearch] = useState<string>('')
+  const [searchTenNguoiMuon, setSearchTenNguoiMuon] = useState<string>('')
+  const [searchMaCB, setSearchMaCB] = useState<any>('')
+
+  const [canbos, setCanbos] = useState([])
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
+  const [openModalTraThietBij, setOpenModalTraThietBi]= useState(false)
   const [curData, setCurData] = useState({})
   const [messageApi, contextHolder] = message.useMessage();
   const [trangThietBi, setTrangThietBi] = useState([]);
@@ -37,10 +45,19 @@ const MuonTra = () => {
     setOpenModalEdit(false)
   }
 
+  const handleModalTraThietBi = () => {
+    setOpenModalTraThietBi(false)
+  }
+
   const hanldUpdate = (data: any) => {
 
     setCurData(data)
     setOpenModalEdit(true)
+  }
+
+  const handleTraThietBi = (data: any) => {
+    setCurData(data)
+    setOpenModalTraThietBi(true)
   }
 
   const hanldeDelete = async (id: number) => {
@@ -91,7 +108,9 @@ const MuonTra = () => {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       align: 'center',
-      render: (TrangThai) => <div>{TrangThai === 0 ? "Đang mượn" : " Chưa trả "}</div>,
+      width: '13%',
+      render: (TrangThai) => <div>{TrangThai === 0 ? <Tag color="volcano">Đang mượn</Tag> : <Tag color="green" >Đã trả</Tag>}</div>,
+
     },
     {
       title: "Chú thích",
@@ -102,7 +121,9 @@ const MuonTra = () => {
       title: 'Thao tác',
       width: '108px',
       render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
-
+         <Tooltip placement="top" title="Trả thiết bị">
+            <UndoOutlined onClick={() => handleTraThietBi(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
+         </Tooltip>
         <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
         <Popconfirm onConfirm={() => hanldeDelete(record.Ma_LSM)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
           <DeleteOutlined style={{ color: 'red', cursor: 'point' }} />
@@ -110,6 +131,26 @@ const MuonTra = () => {
       </div>
     }
   ]
+  //lay dữ liệu cán bộ 
+  const getCanbo = () => {
+    canboServices.get({
+      page: 1, 
+      size: 100
+    }).then((res) => {
+   
+      if(res.status) {
+          const temp = res?.data?.data.map((item: any) => {
+            return {
+              label: item?.Ten_CB,
+              value: item?.Ma_CB
+            }
+        })
+        setCanbos(temp)
+        
+      }
+      
+    }).catch((err :any) => console.log(err))
+  }
   //lấy trang thiết bị
   const getTTB = () => {
     TrangthietbiServices.get({
@@ -132,10 +173,12 @@ const MuonTra = () => {
   }
   //lấy dữ liệu lịch sử mượn
   const getData = () => {
+    setLoading(true)
     muontraServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { NguoiMuon: search })
+      ...(searchTenNguoiMuon && searchTenNguoiMuon !== "" && { ten_nguoi_muon: searchTenNguoiMuon }),
+      ...(searchMaCB && { Ma_CB: searchMaCB })
     }).then(res => {
       if (res.status) {
         const temp = res.data.data.map((item: any) => {
@@ -149,9 +192,12 @@ const MuonTra = () => {
         })
         setCount(res.data.count)
         setData(temp)
+
       }
+      setLoading(false)
     }).catch((err: any) => {
       console.log(err)
+      setLoading(false)
     })
   }
  
@@ -175,10 +221,11 @@ const MuonTra = () => {
       size: 100,
     })) 
     getTTB()
+    getCanbo()
   }, [])
   useEffect(() => {
     getData()
-  }, [currentPage, rowsPerPage, search])
+  }, [currentPage, rowsPerPage, searchTenNguoiMuon, searchMaCB])
   // console.log(data)
   return <div className="ds_muontra">
     {contextHolder}
@@ -209,30 +256,7 @@ const MuonTra = () => {
       </Button>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
-    <Row>
-      <Col span={6}>
-        <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
-          <label style={{ marginBottom: "4px" }}>Tên người mượn</label>
-          <Input
-            type="text"
-            placeholder="Tìm kiếm"
-            style={{ height: "34px" }}
-            onChange={(e) => {
-              if (e.target.value === "") {
-                setSearch('')
-              }
-            }}
-            onKeyPress={(e: any) => {
-              if (e.key === "Enter") {
-                setSearch(e.target?.value)
-                setCurrentPage(1)
-              }
-            }}
-          />
-        </div>
-      </Col>
-      <Divider style={{ margin: "10px" }}></Divider>
-    </Row>
+    <Filter setSearchMaCB={setSearchMaCB} setSearchTenNguoiMuon={setSearchTenNguoiMuon} setCurrentPage={setCurrentPage} canbos={canbos}/>
     <Row>
 
       <Table
@@ -275,10 +299,10 @@ const MuonTra = () => {
     </Row>
     <ModalMuonTra  lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalAdd} handleModal={hanldeModalAdd} action="Add" getData={getData} /> 
      <ModalMuonTra lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalEdit} handleModal={handleModalEdit} action="Edit" getData={getData} />
-
+    <ModalTraTrangThietBi open={openModalTraThietBij} handleModal={handleModalTraThietBi} curData={curData} />
   </div>;
 };
 
 const ModalMuonTra = React.lazy(() => import("./ModalMuonTra"))
-
+const ModalTraTrangThietBi = React.lazy(() => import("./ModalTraThietBi"))
 export default MuonTra;

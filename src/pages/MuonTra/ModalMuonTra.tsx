@@ -43,7 +43,9 @@ const ModalMuonTra = (props: props) => {
     const {action, handleModal, open, trangThietBi, curData, getData} =  props
     const canbo = useSelector((state: any) => state.auth.user_info)
     const phongshoc = useSelector((state :any) => state.phonghoc.phonghocs)
+    // const [phonghocs, setPhongHocs] = useState<any>(phongshoc?.data ? phongshoc?.data : [])
     const [valueCheckbox, setValueCheckbox] = useState<any>()
+    const [selectedPH, setSelectedPH] = useState<any> ()
     const [messageApi, contextHolder] = message.useMessage();
     const [lichhocs, setLichHoc] = useState<any>([])
     const [dunglich, setDungLich] = useState(true)
@@ -108,6 +110,20 @@ const ModalMuonTra = (props: props) => {
     }
 
     const handlChangeSelectLop = (Ma_PH: any) => {
+        setSelectedPH(Ma_PH)
+        if (Array.isArray(phongshoc?.data)) {
+            const phonghoc = phongshoc.data.find((item:any) => item.Ma_PH === Ma_PH)
+           if(Array.isArray(phonghoc?.TrangThietBi)) {
+                const arrayTTb = phonghoc.TrangThietBi.map((item: any) => {
+                    return item?.Ma_TTB
+                })
+                form.setFieldValue("lst_id_ttb", arrayTTb)
+           } else {
+            form.setFieldValue("lst_id_ttb", [])
+           }
+        }
+      
+        
        if(Ma_PH) {
         getLichHoc(Ma_PH)
        } else {
@@ -131,6 +147,14 @@ const ModalMuonTra = (props: props) => {
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
     useEffect(() => {
+      if(action === "Add") {
+          setValueCheckbox(undefined)
+          setSelectedPH(undefined)
+      } else {
+        setSelectedPH(curData?.LichHoc ? curData?.LichHoc?.Ma_PH : undefined)
+        setValueCheckbox(curData?.Ma_LH)
+
+      }
       form.setFieldsValue({
         ChuThich: curData?.ChuThich,
         SoDienThoai: curData?.SoDienThoai,
@@ -203,7 +227,10 @@ const ModalMuonTra = (props: props) => {
             <Card style={{marginTop:"10px"}} 
                 title={<Row>
                   <Col span={18}>
-                    <Select defaultValue={curData?.LichHoc?.Ma_PH} onChange={(value) => handlChangeSelectLop(value)} style={{width:"100%"}} allowClear showSearch options={Array.isArray(phongshoc?.data) ? phongshoc?.data.map((item: any) => {
+                    <Select 
+                    // defaultValue={curData?.LichHoc ? curData?.LichHoc?.Ma_LH : undefined} 
+                    value={selectedPH}
+                    onChange={(value) => handlChangeSelectLop(value)} style={{width:"100%"}} allowClear showSearch options={Array.isArray(phongshoc?.data) ? phongshoc?.data.map((item: any) => {
                             return {
                                 ...item,
                                 value: item?.Ma_PH ,
