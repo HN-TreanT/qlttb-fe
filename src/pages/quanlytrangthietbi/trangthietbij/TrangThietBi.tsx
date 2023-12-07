@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Input } from "antd"
+import {  Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, Input, Tag } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import useAction from "../../../redux/useActions";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -121,30 +121,34 @@ const TrangThietBi = () => {
     {
       title: "Loại",
       dataIndex: "Loai_TTB",
-      render: (Loai_TTB) => <div>{Loai_TTB ? Loai_TTB.Ten_Loai : "Không có loại trang thiết bị này"}</div>,
+      render: (Loai_TTB) => <div>{Loai_TTB ? Loai_TTB.Ten_Loai : ""}</div>,
+      align: 'center',
     },
     {
       title: "Phòng học",
       dataIndex: "PhongHoc",
-      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.TenPhong : "Không có phòng học này"}</div>,
+      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.TenPhong : ""}</div>,
+      align: 'center',
     },
     {
       title: "Giảng đường",
       dataIndex: "PhongHoc",
-      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.GiangDuong : "Không có giảng đường này"}</div>,
+      render: (PhongHoc) => <div>{PhongHoc ? PhongHoc.GiangDuong : ""}</div>,
+      align: 'center',
     },
     {
       title: "Trạng thái",
       dataIndex: "TrangThai",
-      render: (TrangThai) => <div>{TrangThai == 1 ? "Đang mượn" : " chưa mượn "}</div>,
-    },
-    {
-      title: "Ngày nhập",
-      dataIndex: "NgayNhap",
+      render: (TrangThai) => <div>{TrangThai === 1 ?<Tag color="volcano">Đang mượn</Tag> :  <Tag color="green" >Có sẵn</Tag>}</div>,
       align: 'center',
-      width: '20%',
-      render: (text, record, index) => <span>{text ? dayjs(text).format("DD/MM/YYYY") : ""}</span>
     },
+    // {
+    //   title: "Ngày nhập",
+    //   dataIndex: "NgayNhap",
+    //   align: 'center',
+    //   width: '20%',
+    //   render: (text, record, index) => <span>{text ? dayjs(text).format("DD/MM/YYYY") : ""}</span>
+    // },
     {
       title: 'Thao tác',
       width: '108px',

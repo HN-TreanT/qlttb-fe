@@ -15,10 +15,11 @@ interface DataType {
 
   interface props {
     Ma_LSM: any,
-    trangThietBi: any[]
+    trangThietBi: any[],
+    getTTB:any
   }
 const ChiTietMuonTra = (props: props) => {
-   const {Ma_LSM} = props
+    const {Ma_LSM, getTTB} = props
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerpage] = useState(9)
     const [count, setCount] = useState(0)
@@ -40,21 +41,25 @@ const ChiTietMuonTra = (props: props) => {
     
 
     const getData = () => {
-      setLoading(true)
-      lichsusudungServices.get({
-        page : 1,
-        size: 100,
-        Ma_LSM: Ma_LSM
-      }).then((res :any) => {
-         if(res.status) {
-          setData(res.data.data)
-          setCount(res.data.count)
-         }
-         setLoading(false)
-      }).catch((err:any) => {
-        console.log(err)
-        setLoading(false)
-      })
+      if (Ma_LSM) {
+        setLoading(true)
+        lichsusudungServices.get({
+          page : 1,
+          size: 100,
+          Ma_LSM: Ma_LSM
+        }).then((res :any) => {
+           if(res.status) {
+            setData(res.data.data)
+            setCount(res.data.count)
+           }
+           setLoading(false)
+        }).catch((err:any) => {
+          console.log(err)
+          setLoading(false)
+        })
+      } else {
+        setData([])
+      }
     }
 
     const handleUpdate = (data :any) => {
@@ -65,6 +70,7 @@ const ChiTietMuonTra = (props: props) => {
       lichsusudungServices.deleteById(id).then((res: any) => {
         if(res.status) {
           getData()
+          getTTB()
            message.success("Xóa thành công")
         }
       }).catch((err: any) => {
@@ -91,15 +97,13 @@ const ChiTietMuonTra = (props: props) => {
           title: "Trạng thái",
           dataIndex: "TrangThai",
           align: 'center',
-         render: (TrangThai) => <div>{TrangThai === 0 ?  <Tag color="geekblue" >Đã trả</Tag> : <Tag color="volcano">Đang mượn</Tag>}</div>,
+         render: (TrangThai) => <div>{TrangThai === "Đang mượn" ? <Tag color="volcano">Đang mượn</Tag> : <Tag color="geekblue" >Đã trả</Tag> }</div>,
 
         },
         {
           title: "Nhận xét",
-          dataIndex: "NhanXet",
-        
+          dataIndex: "NhanXet",    
           width: '20%',
-
         },
        
         {
@@ -159,8 +163,8 @@ const ChiTietMuonTra = (props: props) => {
             }
             }}
         />
-      <Modal Ma_LSM={Ma_LSM} action="Add" open={openModalAdd} handlModal={handleModalAdd} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
-      <Modal Ma_LSM={Ma_LSM} action="Edit" open={openModalEdit} handlModal={handleModalEdit} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
+      <Modal getTTB={getTTB} Ma_LSM={Ma_LSM} action="Add" open={openModalAdd} handlModal={handleModalAdd} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
+      <Modal getTTB={getTTB} Ma_LSM={Ma_LSM} action="Edit" open={openModalEdit} handlModal={handleModalEdit} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
 
     </Fragment>
     

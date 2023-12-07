@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Table, Divider, Popconfirm, Button } from "antd"
+import { Row, Table, Divider, Popconfirm, Button, Tag } from "antd"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
 import { lichsusudungServices } from "../../../utils/services/lichsususungService";
@@ -13,45 +13,22 @@ interface DataType {
 
 }
 const TrangThietBi = ({ ttb }: any) => {
+ 
     const [count, setCount] = useState(0)
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerpage] = useState(9)
-    const [openModalAdd, setOpenModalAdd] = useState(false)
-    const [openModalEdit, setOpenModalEdit] = useState(false)
-    const [curData, setCurData] = useState({})
-    const [messageApi, contextHolder] = message.useMessage();
-    const hanldeModalAdd = () => {
-        setOpenModalAdd(false)
-    }
-    const handleModalEdit = () => {
-        setOpenModalEdit(false)
-    }
-
-    const hanldUpdate = (data: any) => {
-        setOpenModalEdit(true)
-        setCurData(data)
-    }
-
-    const hanldeDelete = async (id: number) => {
-        lichsusudungServices.deleteById(id).then((res) => {
-            getData()
-        }).catch((err: any) => {
-            console.log(err)
-            message.error("Xóa thất bại")
-        })
-    };
-
 
     const getData = () => {
         setLoading(true)
         lichsusudungServices.get({
             page: currentPage,
             size: rowsPerPage,
-            Ma_TTB: ttb?.Ma_TTB
+            Ma_LSM: ttb?.Ma_LSM
         }).then((res) => {
             if (res.status) {
+               
                 setCount(res.data.count)
                 setData(res.data.data)
             }
@@ -72,22 +49,28 @@ const TrangThietBi = ({ ttb }: any) => {
             render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
         },
         {
-            title: "tên trang thiết bị",
+            title: "Trang thiết bị",
             dataIndex: "TrangThietBi",
             align: "center",
             render: (TrangThietBi) => <div>{TrangThietBi ? TrangThietBi?.Ten_TTB : ""}</div>,
         },
         {
-            title: "ngày mượn",
+            title: "Ngày mượn",
             dataIndex: "TrangThietBi",
             align: "center",
-            render: (TrangThietBi) => <div>{TrangThietBi ? TrangThietBi?.createdAt : ""}</div>,
+            render: (TrangThietBi) => <div>{TrangThietBi ? dayjs(TrangThietBi?.createdAt).format("DD/MM/YYYY") : ""}</div>,
         },
         {
             title: "Trạng thái",
-            dataIndex: "TrangThietBi",
+            dataIndex: "TrangThai",
             align: "center",
-            render: (TrangThietBi) => <div>{TrangThietBi.TrangThai == 0 ? "Đang mượn" : " chưa trả "}</div>,
+            render: (TrangThai) => <div>{TrangThai === "Đang mượn" ? <Tag color="volcano">Đang mượn</Tag> : <Tag color="green" >Đã trả</Tag>}</div>,
+        },
+        {
+            title: "Nhận xét",
+            dataIndex: "NhanXet",
+            align: "center",
+            
         }
     ]
     useEffect(() => {
@@ -95,7 +78,6 @@ const TrangThietBi = ({ ttb }: any) => {
     }, [currentPage, rowsPerPage])
 
     return <div className="ds_trangthietbi">
-        {contextHolder}
         <Row>
             <h3>Danh sách các trang thiết bị mượn</h3>
             <Divider style={{ margin: "10px" }}></Divider>

@@ -35,10 +35,15 @@ const ModalAddTTB = (props: Props) => {
         }
     }, [curData, form])
     const onFinish = async (values: any) => {
+        const dataSubmit = {
+            ...values,
+            Ma_PH: values?.Ma_PH ? values?.Ma_PH : null
+        }
+       
         try {
             if (action === "Add") {
                 const res = await TrangthietbiServices.create({
-                    ...values,
+                    ...dataSubmit,
                 })
                 if (res.status) {
                     dispatch(actions.trangthietbiAction.loadData(params))
@@ -48,7 +53,7 @@ const ModalAddTTB = (props: Props) => {
                     message.error(res.message)
                 }
             } else {
-                const res = await TrangthietbiServices.update(curData.Ma_TTB, values)
+                const res = await TrangthietbiServices.update(curData.Ma_TTB, dataSubmit)
                 if (res.status) {
                     dispatch(actions.trangthietbiAction.loadData(params))
                     handleModal()

@@ -33,6 +33,14 @@ const update = (id: Number, data: any) => {
     });
 };
 
+const traThietBi = (id: Number, data: any) => {
+    return api.makeAuthRequest({
+        url: `/api/lich-su-muon/tra_thiet_bi/${id}`,
+        method: "PUT",
+        data: data,
+    });
+};
+
 const deleteById = (id: Number) => {
     return api.makeAuthRequest({
         url: `/api/lich-su-muon/${id}`,
@@ -46,4 +54,5 @@ export const muontraServices = {
     create,
     update,
     deleteById,
+    traThietBi
 };

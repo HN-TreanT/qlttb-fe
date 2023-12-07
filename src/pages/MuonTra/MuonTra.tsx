@@ -8,9 +8,10 @@ import { message } from "antd";
 import { muontraServices } from "../../utils/services/muontraService";
 import { TrangthietbiServices } from "../../utils/services/trangthietbiServices";
 import { lichhoctapServices } from "../../utils/services/lichhoctapService";
-import ChiTietMuonTra from "./ChiTietMuonTra";
+
 import { canboServices } from "../../utils/services/canbo";
 import Filter from "./Filter";
+import dayjs from "dayjs";
 interface DataType {
   key: number;
   updatedAt: Date;
@@ -105,6 +106,14 @@ const MuonTra = () => {
     },
   
     {
+      title: "Ngày mượn",
+      dataIndex: "createdAt",
+      align: 'center',
+      width: '10%',
+      render: (createdAt) => <div>{createdAt  ? dayjs(createdAt).format("DD/MM/YYYY") : ""}</div>,
+
+    },
+    {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       align: 'center',
@@ -155,7 +164,8 @@ const MuonTra = () => {
   const getTTB = () => {
     TrangthietbiServices.get({
       page: 1,
-      size: 100
+      size: 100,
+     TrangThai: 0
     }).then(res => {
       if (res.status) {
         const temp = res.data.data.map((item: any) => {
@@ -177,6 +187,7 @@ const MuonTra = () => {
     muontraServices.get({
       page: currentPage,
       size: rowsPerPage,
+      TrangThai: 0,
       ...(searchTenNguoiMuon && searchTenNguoiMuon !== "" && { ten_nguoi_muon: searchTenNguoiMuon }),
       ...(searchMaCB && { Ma_CB: searchMaCB })
     }).then(res => {
@@ -215,6 +226,11 @@ const MuonTra = () => {
     })
   }
   useEffect(() => {
+    dispatch(actions.loaittbAction.loadData({
+      page: 1,
+      size: 100,
+     
+    }))
     getLichHoc();
     dispatch(actions.phonghocAction.loadData({
       page: 1,
@@ -271,12 +287,12 @@ const MuonTra = () => {
           }
         })}
         columns={columns}
-        expandable={{
-          expandedRowRender: (record) => {
-            return <ChiTietMuonTra trangThietBi={trangThietBi}  Ma_LSM={record?.Ma_LSM} />
-          },
+        // expandable={{
+        //   expandedRowRender: (record) => {
+        //     return <ChiTietMuonTra trangThietBi={trangThietBi}  Ma_LSM={record?.Ma_LSM} />
+        //   },
           
-        }}
+        // }}
         pagination={{
           current: currentPage,
           pageSize: rowsPerPage,
@@ -297,9 +313,9 @@ const MuonTra = () => {
       />
 
     </Row>
-    <ModalMuonTra  lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalAdd} handleModal={hanldeModalAdd} action="Add" getData={getData} /> 
-     <ModalMuonTra lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalEdit} handleModal={handleModalEdit} action="Edit" getData={getData} />
-    <ModalTraTrangThietBi open={openModalTraThietBij} handleModal={handleModalTraThietBi} curData={curData} />
+    <ModalMuonTra getTTB={getTTB} lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalAdd} handleModal={hanldeModalAdd} action="Add" getData={getData} /> 
+     <ModalMuonTra getTTB={getTTB} lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalEdit} handleModal={handleModalEdit} action="Edit" getData={getData} />
+    <ModalTraTrangThietBi getData={getData} open={openModalTraThietBij} handleModal={handleModalTraThietBi} curData={curData} />
   </div>;
 };
 

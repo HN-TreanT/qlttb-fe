@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect } from "react";
-import {Form, Button, Modal, Row, Col, message} from 'antd'
+import React, { Fragment, useEffect, useState } from "react";
+import {Form, Button, Modal, Row, Col, message, Select} from 'antd'
 import DebounceSelect from "../../components/DebouceSelect";
 import { TrangthietbiServices } from "../../utils/services/trangthietbiServices";
 import { lichsusudungServices } from "../../utils/services/lichsususungService";
+import {  useSelector } from "react-redux";
 interface props {
     open : boolean,
     handlModal: any,
@@ -10,63 +11,78 @@ interface props {
     action: string,
     trangThietBi: any,
     getData: any,
-    Ma_LSM: any
+    Ma_LSM: any,
+    getTTB: any
 }
-async function fetchTTB(search: string): Promise<any[]> {
-    return TrangthietbiServices.get( {
-        page : 1,
-        size : 100,
-        ...(search && search !== "" && {Ten_TTB : search})
-      }
-    ).then((res) => {
-     
-      if(res.status) {
-          const temp = res?.data?.data.map((item: any) => {
-            return {
-              label: item?.Ten_TTB,
-              value: item?.Ma_TTB
-            }
-        })
-        return temp
-      }else {
-        return []
-      }
-      
-    }).catch((err :any) => console.log(err))
-  }
+
 const ModalAddChiTietMuonTra = (props: props) => {
     const [messageApi, contextHolder] = message.useMessage();
-
+    
     const [form] = Form.useForm()
     const {open, handlModal, curData, action, trangThietBi, getData, Ma_LSM} = props
+    const [ttbs, setTtbs] = useState<any[]>(trangThietBi)
+    const { count, data } = useSelector((state: any) => state.loaittb.loaittbs)
+    const [Ma_Loai, setMaLoai] = useState<any>()
+
+    const getTTB = () => {
+        TrangthietbiServices.get({
+          page: 1,
+          size: 100,
+         TrangThai: 0,
+         ...(Ma_Loai && {Ma_Loai_TTB: Ma_Loai})
+        }).then(res => {
+          if (res.status) {
+            const temp = res.data.data.map((item: any) => {
+              return {
+                ...item,
+                label: item?.Ten_TTB ,
+                value: item?.Ma_TTB
+              }
+            } )
+            setTtbs(temp)
+          }
+        }).catch((err: any) => {
+          console.log(err)
+        })
+      }
+
 
     const onFinish = (value: any) => {
-        if(action === "Add") {
-          
-            const dataSubmit = {
-                Ma_LSM : Ma_LSM,
-                Ma_TTB : value?.Ma_TTB,
-                TrangThai:"Đang mượn"
+        if(action === "Add") {          
+           try {
+            if (Array.isArray(value?.Ma_TTB)) {
+                value.Ma_TTB.map( async (item: any) => {
+                    const dataSubmit = {
+                        Ma_LSM : Ma_LSM,
+                        Ma_TTB : item,
+                        TrangThai:"Đang mượn"
+                    }
+                    await lichsusudungServices.create(dataSubmit)
+                })
+                message.success("Thêm mới thành công")
+                getData()
+                getTTB()
+                handlModal()
+            } else {
+                message.error("Thêm mới thất bại")
             }
-            lichsusudungServices.create(dataSubmit).then((res:any) => {
-                if(res.status) {
-                   message.success("Thêm mới thành công")
-                   getData()
-                   handlModal()
-                } else {
-                   message.error("Thêm mới thất bại")
-                }
-             }).catch((err:any) => {
-                 console.log(err)
-                 message.error("Thêm mới thất bại")
- 
-             })
+           } catch (err: any) {
+            console.log(err)
+           }
+           
 
         } else {
+           
+            if(value?.Ma_TTB === curData?.TrangThietBi?.Ten_TTB)
+            {
+               value.Ma_TTB = curData?.Ma_TTB
+            }
+        
             lichsusudungServices.update(curData?.Ma_LSM_TTB, value).then((res:any) => {
                if(res.status) {
                   message.success("Chỉnh sửa thành công")
                   getData()
+                  getTTB()
                   handlModal()
                } else {
                   message.error("Chỉnh sửa thất bại")
@@ -80,8 +96,16 @@ const ModalAddChiTietMuonTra = (props: props) => {
     }
 
     useEffect(() => {
-        form.setFieldValue("Ma_TTB", curData?.Ma_TTB ? curData?.Ma_TTB : [])
+        getTTB()
+    }, [Ma_Loai, curData])
+
+    useEffect(() => {
+
+        form.setFieldValue("Ma_TTB", curData?.Ma_TTB ? curData?.TrangThietBi?.Ten_TTB : [])
+
     }, [curData])
+    const filterOption = (input: string, option?: { label: string; value: string }) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
     return <Fragment>
           {contextHolder}
           <Modal
@@ -91,6 +115,21 @@ const ModalAddChiTietMuonTra = (props: props) => {
     onCancel={() => handlModal()}
     >
         <Form layout="vertical" form={form} onFinish={onFinish}>
+            <Form.Item
+             label="Loại thiết bị"
+            >
+             {
+                <Select onChange={(value:any) => {
+                   setMaLoai(value)
+                } } options={Array.isArray(data) ? data.map((item:any) => {
+                    return {
+                        value: item?.Ma_Loai_TTB,
+                        label: item?.Ten_Loai
+                    }
+                }) :[]} allowClear showSearch placeholder="Chọn loại trang thiết bị"/>
+             }
+
+            </Form.Item>
             <Form.Item
             required
              label="Trang thiết bị"
@@ -102,7 +141,10 @@ const ModalAddChiTietMuonTra = (props: props) => {
              ]}
              name={"Ma_TTB"}
             >
-             <DebounceSelect   fetchOptions={fetchTTB} initOption={trangThietBi} placeholder='Chọn thiết bị' />
+             {
+                action === "Add" ? <Select allowClear showSearch filterOption={filterOption}  mode="multiple" options={ttbs} placeholder='Chọn thiết bị' /> 
+                : <Select allowClear showSearch filterOption={filterOption}  options={ttbs} placeholder='Chọn thiết bị' /> 
+             }
 
             </Form.Item>
         
