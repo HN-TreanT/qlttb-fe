@@ -10,18 +10,18 @@ interface props{
     action: string,
     handleModal : any,
     lichhoc: any,
-    trangThietBi: any,
     curData: any,
     getData: any,
     setID: any,
     setCurrent: any,
-    current: number
+    current: number,
+    setMaPh: any
 }
 
 const ThongTinChung = (props: props) => {
 
     const [form] = Form.useForm()
-    const {action, handleModal, trangThietBi, curData, getData, setCurrent, current, setID} =  props
+    const {action, handleModal, curData, getData, setCurrent, current, setID, setMaPh} =  props
     const canbo = useSelector((state: any) => state.auth.user_info)
     const phongshoc = useSelector((state :any) => state.phonghoc.phonghocs)
     // const [phonghocs, setPhongHocs] = useState<any>(phongshoc?.data ? phongshoc?.data : [])
@@ -43,8 +43,10 @@ const ThongTinChung = (props: props) => {
                 getData()
                 setCurrent(current + 1)
                 setID(res?.data.Ma_LSM)
+                setMaPh(selectedPH)
                 // handleModal()
                 message.success("Thêm mới thành công")
+                
                }
             }).catch((err: any) => {
                 console.log(err)
@@ -60,6 +62,7 @@ const ThongTinChung = (props: props) => {
                 if(res.status) {
                     getData()
                     setCurrent(current + 1)
+                    setMaPh(selectedPH)
                     // handleModal()
                     message.success("Chỉnh sửa thành công")
                    }
@@ -137,6 +140,7 @@ const ThongTinChung = (props: props) => {
           setValueCheckbox(undefined)
           setSelectedPH(undefined)
       } else {
+        // setMaPh(curData?.LichHoc ? curData?.LichHoc?.Ma_PH : undefined)
         setSelectedPH(curData?.LichHoc ? curData?.LichHoc?.Ma_PH : undefined)
         setValueCheckbox(curData?.Ma_LH)
 

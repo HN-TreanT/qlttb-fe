@@ -14,5 +14,6 @@ export const RouterLinks = {
   CHAT_LUONG: "/quanlybaoduong/chat_luong",
   DANH_SACH_PHONG: "/quanlychung/danh_sach_phong",
   DANH_SACH_LOP: "/quanlychung/danh_sach_lop",
-  MUON_TRANG_TB: "/muon_ttb/xu_ly_muon_tra_ttb"
+  MUON_TRANG_TB: "/muon_ttb/xu_ly_muon_tra_ttb",
+  NHAP_THIET_BI: "/quanlyttb/nhap_ttb"
 };

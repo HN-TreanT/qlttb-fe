@@ -11,3 +11,10 @@
 .redColor{
   color: red;
 }
+
+.ant-select-selection-placeholder {
+  text-align: start;
+}
+.ant-select-selection-item {
+  text-align: start;
+}

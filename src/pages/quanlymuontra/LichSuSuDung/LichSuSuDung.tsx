@@ -97,7 +97,7 @@ const LichSudung = () => {
     muontraServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { Ten_CB: search })
+      ...(search && search !== "" && { ten_nguoi_muon: search })
     }).then(res => {
       if (res.status) {
         setCount(res.data.count)

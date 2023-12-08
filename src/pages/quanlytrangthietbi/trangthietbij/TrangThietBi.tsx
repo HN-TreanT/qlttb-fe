@@ -211,7 +211,7 @@ const TrangThietBi = () => {
           <Input
             type="text"
             placeholder="Tìm kiếm"
-            style={{ height: "34px" }}
+           
             onChange={(e) => {
               if (e.target.value === "") {
                 setSearch('')
@@ -226,9 +226,9 @@ const TrangThietBi = () => {
           />
         </div>
       </Col>
-      <Col style={{display:"flex", justifyContent:"center", flexDirection:"column"}} span={6}>
-          <div style={{alignSelf:"flex-start", marginBottom:"4px"}}>Loại trang thiết bị</div>
-          <Select  style={{width:"100%", alignSelf:"flex-start"}} options={loaiTTb} placeholder="Loại trang thiết bị" allowClear onChange={(value) => setMaLoaiTTB(value) }/>
+      <Col span={6}>
+          <div style={{textAlign:"start", marginBottom:"4px"}}>Loại trang thiết bị</div>
+          <Select style={{width:"100%"}} options={loaiTTb} placeholder="Loại trang thiết bị" allowClear onChange={(value) => setMaLoaiTTB(value) }/>     
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>

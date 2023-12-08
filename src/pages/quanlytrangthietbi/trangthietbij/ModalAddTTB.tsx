@@ -112,7 +112,7 @@ const ModalAddTTB = (props: Props) => {
                                     }
                                 ]}
                             >
-                                <Select options={props.loai_ttbs} placeholder="Chọn loại trang thiét bị " />
+                                <Select allowClear options={props.loai_ttbs} placeholder="Chọn loại trang thiét bị " />
 
                             </FormItem>
                         </Col>
@@ -126,7 +126,7 @@ const ModalAddTTB = (props: Props) => {
                             name='Ma_PH'
                 
                         >
-                            <Select showSearch filterOption={filterOption} allowClear options={props.ten_PH} placeholder="Chọn phòng học" />
+                            <Select  showSearch filterOption={filterOption} allowClear options={props.ten_PH} placeholder="Chọn phòng học" />
 
                         </FormItem>
                     </Col>

@@ -35,7 +35,7 @@ const MuonTra = () => {
   const [openModalTraThietBij, setOpenModalTraThietBi]= useState(false)
   const [curData, setCurData] = useState({})
   const [messageApi, contextHolder] = message.useMessage();
-  const [trangThietBi, setTrangThietBi] = useState([]);
+  // const [trangThietBi, setTrangThietBi] = useState([]);
   const [lichhoc, setLichHoc] = useState([]);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0)
@@ -161,26 +161,26 @@ const MuonTra = () => {
     }).catch((err :any) => console.log(err))
   }
   //lấy trang thiết bị
-  const getTTB = () => {
-    TrangthietbiServices.get({
-      page: 1,
-      size: 100,
-     TrangThai: 0
-    }).then(res => {
-      if (res.status) {
-        const temp = res.data.data.map((item: any) => {
-          return {
-            ...item,
-            label: item?.Ten_TTB ,
-            value: item?.Ma_TTB
-          }
-        } )
-        setTrangThietBi(temp)
-      }
-    }).catch((err: any) => {
-      console.log(err)
-    })
-  }
+  // const getTTB = () => {
+  //   TrangthietbiServices.get({
+  //     page: 1,
+  //     size: 100,
+  //    TrangThai: 0
+  //   }).then(res => {
+  //     if (res.status) {
+  //       const temp = res.data.data.map((item: any) => {
+  //         return {
+  //           ...item,
+  //           label: item?.Ten_TTB ,
+  //           value: item?.Ma_TTB
+  //         }
+  //       } )
+  //       setTrangThietBi(temp)
+  //     }
+  //   }).catch((err: any) => {
+  //     console.log(err)
+  //   })
+  // }
   //lấy dữ liệu lịch sử mượn
   const getData = () => {
     setLoading(true)
@@ -236,7 +236,7 @@ const MuonTra = () => {
       page: 1,
       size: 100,
     })) 
-    getTTB()
+    // getTTB()
     getCanbo()
   }, [])
   useEffect(() => {
@@ -313,8 +313,8 @@ const MuonTra = () => {
       />
 
     </Row>
-    <ModalMuonTra getTTB={getTTB} lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalAdd} handleModal={hanldeModalAdd} action="Add" getData={getData} /> 
-     <ModalMuonTra getTTB={getTTB} lichhoc={lichhoc} trangThietBi={trangThietBi} curData={curData} open={openModalEdit} handleModal={handleModalEdit} action="Edit" getData={getData} />
+    <ModalMuonTra  lichhoc={lichhoc} curData={curData} open={openModalAdd} handleModal={hanldeModalAdd} action="Add" getData={getData} /> 
+     <ModalMuonTra  lichhoc={lichhoc}  curData={curData} open={openModalEdit} handleModal={handleModalEdit} action="Edit" getData={getData} />
     <ModalTraTrangThietBi getData={getData} open={openModalTraThietBij} handleModal={handleModalTraThietBi} curData={curData} />
   </div>;
 };

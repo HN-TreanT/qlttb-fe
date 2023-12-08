@@ -9,26 +9,26 @@ interface props {
     handlModal: any,
     curData: any,
     action: string,
-    trangThietBi: any,
     getData: any,
     Ma_LSM: any,
-    getTTB: any
+    Ma_PH: any
 }
 
 const ModalAddChiTietMuonTra = (props: props) => {
     const [messageApi, contextHolder] = message.useMessage();
     
     const [form] = Form.useForm()
-    const {open, handlModal, curData, action, trangThietBi, getData, Ma_LSM} = props
-    const [ttbs, setTtbs] = useState<any[]>(trangThietBi)
+    const {open, handlModal, curData, action, getData, Ma_LSM, Ma_PH} = props
+    const [ttbs, setTtbs] = useState<any[]>()
     const { count, data } = useSelector((state: any) => state.loaittb.loaittbs)
     const [Ma_Loai, setMaLoai] = useState<any>()
 
     const getTTB = () => {
-        TrangthietbiServices.get({
+        TrangthietbiServices.getTTB({
           page: 1,
           size: 100,
-         TrangThai: 0,
+        //  TrangThai: 0,
+        ...(Ma_PH && {Ma_PH: Ma_PH}),
          ...(Ma_Loai && {Ma_Loai_TTB: Ma_Loai})
         }).then(res => {
           if (res.status) {
@@ -97,7 +97,7 @@ const ModalAddChiTietMuonTra = (props: props) => {
 
     useEffect(() => {
         getTTB()
-    }, [Ma_Loai, curData])
+    }, [Ma_Loai, curData, Ma_PH])
 
     useEffect(() => {
 

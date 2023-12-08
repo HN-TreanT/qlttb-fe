@@ -10,6 +10,14 @@ const get = (params: any) => {
     });
 };
 
+const getTTB = (params: any) => {
+    return api.makeAuthRequest({
+        url: `/api/trang-thiet-bi/get-ttb`,
+        method: "GET",
+        params: params
+    });
+};
+
 const getById = (id: Number) => {
     return api.makeAuthRequest({
         url: `/api/trang-thiet-bi/${id}`,
@@ -46,4 +54,5 @@ export const TrangthietbiServices = {
     create,
     update,
     deleteById,
+    getTTB
 };

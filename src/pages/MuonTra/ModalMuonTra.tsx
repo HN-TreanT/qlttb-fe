@@ -7,31 +7,31 @@ interface props{
     handleModal : any,
     open: boolean,
     lichhoc: any,
-    trangThietBi: any,
     curData: any,
     getData: any,
-    getTTB: any
 }
 
 const ModalMuonTra = (props: props) => {
-    const {action, handleModal, open, trangThietBi, curData, getData, getTTB} =  props
+    const {action, handleModal, open, curData, getData} =  props
    const [current, setCurrent] = useState(0);
    const [id, setID] = useState<any>(curData?.Ma_LSM)
+   const [Ma_PH, setMaPh] = useState<any>(curData?.LichHoc ? curData?.LichHoc?.Ma_PH : undefined)
    const hanldeCloseModal = () =>  {
     handleModal()
       setID(undefined)
+      setMaPh(undefined)
    }
    const steps = [
      {
         key: 1,
         title: 'Thông tin người mượn',
-        content: <ThongTinChung setCurrent={setCurrent} current={current}  action={action} handleModal={hanldeCloseModal} trangThietBi={trangThietBi} curData={curData} setID={setID} getData={getData} lichhoc={undefined}/>,
+        content: <ThongTinChung setMaPh={setMaPh} setCurrent={setCurrent} current={current}  action={action} handleModal={hanldeCloseModal}  curData={curData} setID={setID} getData={getData} lichhoc={undefined}/>,
         
       },
       {
         key: 2,
         title: 'Trang thiết bị mượn',
-        content: <ChiTietMuonTra getTTB={getTTB} trangThietBi={trangThietBi} Ma_LSM={id ? id : curData?.Ma_LSM}/>,
+        content: <ChiTietMuonTra Ma_PH={Ma_PH ? Ma_PH : curData?.LichHoc?.Ma_PH}  Ma_LSM={id ? id : curData?.Ma_LSM}/>,
       },
     
    ]

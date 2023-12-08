@@ -15,11 +15,11 @@ interface DataType {
 
   interface props {
     Ma_LSM: any,
-    trangThietBi: any[],
-    getTTB:any
+    Ma_PH: any
+   
   }
 const ChiTietMuonTra = (props: props) => {
-    const {Ma_LSM, getTTB} = props
+    const {Ma_LSM} = props
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerpage] = useState(10)
     const [count, setCount] = useState(0)
@@ -70,7 +70,6 @@ const ChiTietMuonTra = (props: props) => {
       lichsusudungServices.deleteById(id).then((res: any) => {
         if(res.status) {
           getData()
-          getTTB()
            message.success("Xóa thành công")
         }
       }).catch((err: any) => {
@@ -163,8 +162,8 @@ const ChiTietMuonTra = (props: props) => {
             }
             }}
         />
-      <Modal getTTB={getTTB} Ma_LSM={Ma_LSM} action="Add" open={openModalAdd} handlModal={handleModalAdd} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
-      <Modal getTTB={getTTB} Ma_LSM={Ma_LSM} action="Edit" open={openModalEdit} handlModal={handleModalEdit} curData={curData} trangThietBi={props.trangThietBi} getData={getData}/>
+      <Modal Ma_PH={props.Ma_PH}  Ma_LSM={Ma_LSM} action="Add" open={openModalAdd} handlModal={handleModalAdd} curData={curData}  getData={getData}/>
+      <Modal Ma_PH={props.Ma_PH} Ma_LSM={Ma_LSM} action="Edit" open={openModalEdit} handlModal={handleModalEdit} curData={curData}  getData={getData}/>
 
     </Fragment>
     

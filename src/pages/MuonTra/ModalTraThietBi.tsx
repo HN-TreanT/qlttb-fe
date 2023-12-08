@@ -64,6 +64,27 @@ const ModalTraTrangThietBi = (props: props) => {
         })
        try {
             await muontraServices.traThietBi(curData?.Ma_LSM, dataSubmit) 
+            dataSubmit.map(async (item : any) => {
+              if (item?.Hong) {
+                TinhTrangTTBServices.create({
+                  TinhTrang: item?.NhanXet,
+                  ViTri: "",
+                  GhiChu: ""
+                }).then((res) => {
+
+                  if(res.status)  {
+                     const now = new Date()
+                      LichSuTinhTrangServices.create({
+                        Ma_TTB: item?.Ma_TTB,
+                        Ma_TTTTB: res?.data.Ma_TTTTB,
+                        TG_DB: now
+                      })
+                  }
+                }).catch((err: any) => {
+                  console.log(err)
+                })
+              }
+            })
             // dataSubmit.forEach(async (item :any) => {
             //     await lichsusudungServices.update(item?.Ma_LSM_TTB, {
             //         TrangThai: "Đã trả",

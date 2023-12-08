@@ -23,6 +23,7 @@ import ChatLuong from './pages/quanlybaoduong/chatluongbaoduong/ChatLuong';
 import DanhSachLop from './pages/quanlymuontra/DanhSachLop/DanhSachLop';
 import DanhSachPhong from './pages/quanlymuontra/DanhSachPhong/DanhSachPhong';
 import MuonTTB from './pages/MuonTra/MuonTra';
+import NhapThietBi from './pages/quanlytrangthietbi/NhapTrangThietBi';
 
 import Layout from './layouts/Layout';
 import NotFound from './pages/not-found/NotFound';
@@ -46,6 +47,7 @@ function App() {
                            <Route path={RouterLinks.LOAI_TTB} element={<Suspense fallback={null}><LoaiTTB /></Suspense>} />
                            <Route path={RouterLinks.TINH_TRANG_TTB} element={<Suspense fallback={null}><TinhTrangTTB /></Suspense>} />
                            <Route path={RouterLinks.LS_SU_DUNG_TTB} element={<Suspense fallback={null}><LichSuSuDung /></Suspense>} />
+                           <Route path={RouterLinks.NHAP_THIET_BI} element={<Suspense fallback={null}><NhapThietBi /></Suspense>} />
                            <Route path={RouterLinks.LICH_HOC_TAP} element={<Suspense fallback={null}><LichHocTap /></Suspense>} />
                            <Route path={RouterLinks.MUON_TRA} element={<Suspense fallback={null}><MuonTra /></Suspense>} />
                            <Route path={RouterLinks.LICH_BAO_DUONG} element={<Suspense fallback={null}><LichBaoDuong /></Suspense>} />
