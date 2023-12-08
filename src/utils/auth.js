@@ -9,10 +9,11 @@ export default class Auth {
     window.localStorage.removeItem("token");
   }
 
-  static async refreshToken(accessToken, refreshToken) {
+  static async refreshToken() {
     try {
+      const refreshToken = window.localStorage.getItem('refresh_token')
       const refreshRes = await axios.post(`${serverConfig.server}/api/auth/refresh`, {
-        refreshToken: refreshToken,
+        refresh_token: refreshToken,
       });
       const newToken = refreshRes?.data?.access_token;
       if (!newToken) {
