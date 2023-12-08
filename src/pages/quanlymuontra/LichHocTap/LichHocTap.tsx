@@ -29,7 +29,7 @@ const LichHocTap = () => {
   const loading = useSelector((state: any) => state.state.loadingState)
   const phongshoc = useSelector((state :any) => state.phonghoc.phonghocs)
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerpage] = useState(9)
+  const [rowsPerPage, setRowsPerpage] = useState(10)
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})

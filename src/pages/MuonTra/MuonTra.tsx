@@ -25,7 +25,7 @@ const MuonTra = () => {
   const actions = useAction()
   const [loading, setLoading]= useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerpage] = useState(9)
+  const [rowsPerPage, setRowsPerpage] = useState(10)
   const [searchTenNguoiMuon, setSearchTenNguoiMuon] = useState<string>('')
   const [searchMaCB, setSearchMaCB] = useState<any>('')
 

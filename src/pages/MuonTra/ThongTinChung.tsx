@@ -204,18 +204,27 @@ const ThongTinChung = (props: props) => {
             </Row>
             <Card style={{marginTop:"10px"}} 
                 title={<Row>
-                  <Col span={18}>
-                    <Select 
-                    // defaultValue={curData?.LichHoc ? curData?.LichHoc?.Ma_LH : undefined} 
-                    value={selectedPH}
-                    onChange={(value) => handlChangeSelectLop(value)} style={{width:"100%"}} allowClear showSearch options={Array.isArray(phongshoc?.data) ? phongshoc?.data.map((item: any) => {
-                            return {
-                                ...item,
-                                value: item?.Ma_PH ,
-                                label: item?.TenPhong
-                            }
-                        }) : []} placeholder="Chọn  phòng học"
-                            filterOption={filterOption}/>
+                  <Col span={18}>              
+                    <Form.Item 
+                    rules={[
+                        {
+                            required:true,
+                            message:"Vui lòng chọn phòng học"
+                        }
+                    ]}>
+                        <Select 
+                      
+                        // defaultValue={curData?.LichHoc ? curData?.LichHoc?.Ma_LH : undefined} 
+                            value={selectedPH}
+                            onChange={(value) => handlChangeSelectLop(value)} style={{width:"100%", marginTop:"10px"}} allowClear showSearch options={Array.isArray(phongshoc?.data) ? phongshoc?.data.map((item: any) => {
+                                return {
+                                    ...item,
+                                    value: item?.Ma_PH ,
+                                    label: item?.TenPhong
+                                }
+                            }) : []} placeholder="Chọn  phòng học"
+                                filterOption={filterOption}/>
+                    </Form.Item>
                   </Col>
                   <Col style={{display:"flex", justifyContent:"flex-end", alignItems:"center"}} span={6}>
                       <span style={{marginRight:"5px"}}>Đúng lịch</span>

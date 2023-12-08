@@ -23,7 +23,7 @@ const LopThamGia = (props: Props) => {
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [data, setData] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerpage] = useState(9)
+    const [rowsPerPage, setRowsPerpage] = useState(10)
     const [count, setCount] = useState(0)
     const [loading, setLoading] = useState(false)
 

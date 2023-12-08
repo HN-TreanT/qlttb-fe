@@ -18,7 +18,7 @@ const LichSudung = () => {
   // const loading = useSelector((state: any) => state.state.loadingState)
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerpage] = useState(9)
+  const [rowsPerPage, setRowsPerpage] = useState(10)
   const [search, setSearch] = useState<string>('')
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState([]);

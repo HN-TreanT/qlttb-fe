@@ -19,7 +19,7 @@ interface DataType {
 const DanhSachCanBo = () => {
    const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerpage] = useState(9)
+  const [rowsPerPage, setRowsPerpage] = useState(10)
   const [search, setSearch] = useState<string>('')
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)

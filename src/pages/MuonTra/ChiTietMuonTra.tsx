@@ -21,7 +21,7 @@ interface DataType {
 const ChiTietMuonTra = (props: props) => {
     const {Ma_LSM, getTTB} = props
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerpage] = useState(9)
+    const [rowsPerPage, setRowsPerpage] = useState(10)
     const [count, setCount] = useState(0)
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)

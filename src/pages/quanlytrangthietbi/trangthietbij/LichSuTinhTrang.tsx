@@ -21,7 +21,7 @@ const LichSuTinhTrang = ({ttb} : any) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerpage] = useState(9)
+  const [rowsPerPage, setRowsPerpage] = useState(10)
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [curData, setCurData] = useState({})
