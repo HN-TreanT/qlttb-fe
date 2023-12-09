@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import { lichhoctapServices } from "../../../utils/services/lichhoctapService";
 import { lopServices } from "../../../utils/services/lopService";
 import DebounceSelect from "../../../components/DebouceSelect";
+import locale from 'antd/es/date-picker/locale/vi_VN'
+
 const FormItem = Form.Item
 
 interface UserValue {
@@ -138,7 +140,7 @@ const FormThongTinChung = (props: Props) => {
                     }
                 ]}
             >
-                <DatePicker style={{width:"100%"}} placeholder='Chọn ngày học' />
+                <DatePicker locale={locale} style={{width:"100%"}} placeholder='Chọn ngày học' />
             </FormItem>
         </Col>
         <Col span={12}>

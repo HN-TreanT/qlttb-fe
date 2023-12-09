@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useAction from "../../../redux/useActions";
 import dayjs from "dayjs";
 import DebounceSelect from "../../../components/DebouceSelect"
+import locale from 'antd/es/date-picker/locale/vi_VN'
+
 const FormItem = Form.Item
 
 interface Props {
@@ -117,18 +119,18 @@ async function fetchCanbo(search: string): Promise<UserValue[]> {
             <FormItem
               style={{marginBottom:"4px"}}
               label={
-                "Cán bộ phụ trách"
+                "Nhân viên phụ trách"
               }
               name='Ma_CB'
               rules={[
                 {
                   required: true,
-                  message: 'Hãy chọn cán bộ phụ trách'
+                  message: 'Hãy chọn nhân viên phụ trách'
                 }
               ]}
             >
                <DebounceSelect
-                placeholder="Hãy chọn cán bộ"
+                placeholder="Hãy chọn nhân viên"
                 fetchOptions={(value) => fetchCanbo(value)}
                 initOption={Array.isArray(canbos.data) ? canbos.data.map((item :any) => {
                     
@@ -167,7 +169,7 @@ async function fetchCanbo(search: string): Promise<UserValue[]> {
               name='Ngay'
              
             >
-              <DatePicker style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
+              <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
               
             </FormItem>
           </Col>

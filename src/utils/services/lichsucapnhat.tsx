@@ -40,10 +40,19 @@ const deleteById = (id: Number) => {
   });
 };
 
+const importExcel = (data: any) => {
+  return api.makeAuthRequest({
+    url: "/api/lich-su-cap-nhat/import-excel",
+    method: "POST",
+    data: data,
+  });
+};
+
 export const lichsucapnhat = {
   get,
   getById,
   create,
   update,
   deleteById,
+  importExcel
 };

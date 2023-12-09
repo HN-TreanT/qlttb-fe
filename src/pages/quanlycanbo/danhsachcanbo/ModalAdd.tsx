@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useAction from "../../../redux/useActions";
 import dayjs from "dayjs";
 import DebounceSelect from "../../../components/DebouceSelect"
+import locale from 'antd/es/date-picker/locale/vi_VN'
+
 const FormItem = Form.Item
 
 interface Props {
@@ -116,7 +118,7 @@ interface Props {
               name='Ngay'
              
             >
-              <DatePicker style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
+              <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
               
             </FormItem>
           </Col>

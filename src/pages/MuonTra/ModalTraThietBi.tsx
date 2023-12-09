@@ -83,6 +83,7 @@ const ModalTraTrangThietBi = (props: props) => {
                 }).catch((err: any) => {
                   console.log(err)
                 })
+                                                             
               }
             })
             // dataSubmit.forEach(async (item :any) => {

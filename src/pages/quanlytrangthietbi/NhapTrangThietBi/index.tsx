@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Input, Tag, Button, Popconfirm, Select, Upload } from "antd"
+import { Row, Col, Table, Breadcrumb, Divider, Input, Tag, Button, Popconfirm, Select, Upload, UploadProps } from "antd"
 import { ColumnProps } from "antd/es/table";
 import { message } from "antd";
 import dayjs from "dayjs";
@@ -62,7 +62,7 @@ const NhapThietBi = () => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Cán bộ phụ trách",
+      title: "Nhân viên phụ trách",
       dataIndex: "CanBo",
       align: "center",
       width: '20%',
@@ -141,6 +141,34 @@ const NhapThietBi = () => {
   }, [currentPage, rowsPerPage, Ma_CB, LoaiCapNhat])
   const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+
+  const props: UploadProps = {
+    // action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+    // listType: 'picture',
+    beforeUpload(file: any) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+         const formData = new FormData()
+         formData.set("file", file)
+         lichsucapnhat.importExcel(formData).then((res) => {
+            if (res.status) {
+               getData()
+               message.success("Nhập file thành công")
+            }
+         }).catch((err :any) => {
+          console.log(err)
+           message.error("Nhập file thất bại")
+
+         })
+      
+        };
+      });
+    },
+  };
+        
   return <div className="ds_muontra">
     {contextHolder}
     <Row>
@@ -161,7 +189,9 @@ const NhapThietBi = () => {
       </Col>
       <Col span={6}></Col>
        <Col style={{display:"flex", justifyContent:"flex-end"}} span={6}>
-        <Upload >
+        <Upload
+        {...props}
+         >
           <Button style={{backgroundColor:"#24A019", color:"white"}} icon={<UploadOutlined />}>Upload</Button>
         </Upload>
           <Button
@@ -180,8 +210,8 @@ const NhapThietBi = () => {
     </Row>
     <Row gutter={15}>
       <Col span={6}>     
-          <div style={{ marginBottom: "4px" , textAlign:"start"}}>Cán bộ phụ trách</div>
-          <Select onChange={(value) => setMaCB(value)} style={{width:"100%"}} allowClear showSearch filterOption={filterOption} options={canbos} placeholder="Chọn cán bộ phụ trách"/>    
+          <div style={{ marginBottom: "4px" , textAlign:"start"}}>Nhân viên phụ trách</div>
+          <Select onChange={(value) => setMaCB(value)} style={{width:"100%"}} allowClear showSearch filterOption={filterOption} options={canbos} placeholder="Chọn nhân viên phụ trách"/>    
       </Col>
       <Col span={6}>     
           <div style={{ marginBottom: "4px", textAlign:"start" }}>Loại cập nhật</div>

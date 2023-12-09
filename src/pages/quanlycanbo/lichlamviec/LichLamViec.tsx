@@ -18,7 +18,9 @@ interface DataType {
 
 const LichLamViec = () => {
   
-  const loading = useSelector((state: any) => state.state.loadingState)
+  const role = localStorage.getItem("role")
+  const canbo = useSelector((state: any) => state.auth.user_info)
+  const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(10)
   const [openModalAdd, setOpenModalAdd] = useState(false)
@@ -30,16 +32,20 @@ const LichLamViec = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const getData = () => {
+   setLoading(true)
     lichlamviceServices.get({
       page: currentPage,
-      size: rowsPerPage
+      size: rowsPerPage,
+      ...(search && search !== "" && {search})
     }).then((res) => {
        if(res.status) {
           setCount(res.data.count)
           setData(res.data.data)
        }
+       setLoading(false)
     }).catch((err :any) => {
       console.log(err)
+      setLoading(false)
     })
   }
   const hanldeModalAdd = () => {
@@ -79,7 +85,7 @@ const LichLamViec = () => {
        render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Cán bộ phụ trách",
+      title: "Nhân viên phụ trách",
       dataIndex: "CanBo",
       align:"center",
       render: (text, record, index) => <span>{text?.Ten_CB ? text?.Ten_CB : ""}</span>
@@ -109,17 +115,17 @@ const LichLamViec = () => {
         width: '108px',
         render: (record: any, index :any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
             
-              <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer'}} />     
-                <Popconfirm onConfirm={() => hanldeDelete(record.Ma_CB)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
+             {role === "U" ? "" :  <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer'}} /> }
+            { role === "U" ? "" : <Popconfirm onConfirm={() => hanldeDelete(record.Ma_CB)} title="Bạn chắc chắn xóa?"cancelText='Hủy' okText='Đồng ý'>
                     <DeleteOutlined  style={{ color: 'red', cursor: 'point' }} />
-                </Popconfirm>
+                </Popconfirm>}
         </div>
     }
 ]
 
   useEffect(() => {
      getData()
-  }, [ currentPage, rowsPerPage])
+  }, [ currentPage, rowsPerPage, search])
   return <div className="ds_canbo">
     {contextHolder}
       <Row>
@@ -127,7 +133,7 @@ const LichLamViec = () => {
           style={{ margin: "auto", marginLeft: 0 }}
           items={[
             {
-              title: "Quản lý cán bộ",
+              title: "Quản lý nhân viên",
             },
             {
               title: (
@@ -136,7 +142,8 @@ const LichLamViec = () => {
             },
           ]}
         />
-        <Button
+        {
+          role === "U" ? "" :  <Button
           type="primary"
           style={{ marginLeft: "auto", width: 100 }}
           className="blue-button"
@@ -147,6 +154,7 @@ const LichLamViec = () => {
         >
           Thêm mới
         </Button>
+        }
         <Divider style={{ margin: "10px" }}></Divider>
       </Row>
       <Row>

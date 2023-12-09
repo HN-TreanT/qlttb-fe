@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Input, Tag } from "antd"
-import { useDispatch, useSelector } from "react-redux";
-import useAction from "../../../redux/useActions"
+import { Row, Col, Table, Breadcrumb, Divider, Input, Tag, Select, DatePicker } from "antd"
 import { ColumnProps } from "antd/es/table";
 import { message } from "antd";
 import TrangThietBi from "./TrangThietBi";
 import { muontraServices } from "../../../utils/services/muontraService";
 import dayjs from "dayjs";
-import { faL } from "@fortawesome/free-solid-svg-icons";
-
+import { canboServices } from "../../../utils/services/canbo";
+import locale from 'antd/es/date-picker/locale/vi_VN'
+const { RangePicker } = DatePicker;
 interface DataType {
   key: number;
   updatedAt: Date;
@@ -20,6 +19,9 @@ const LichSudung = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerpage] = useState(10)
   const [search, setSearch] = useState<string>('')
+  const [searchMaCB, setSearchMaCB] = useState<any>()
+  const [khoangthoigian, setKhoangThoiGian] = useState<any>()
+  const [canbos, setCanbos] = useState([])
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0)
@@ -54,11 +56,12 @@ const LichSudung = () => {
       render: (CanBo: any) => <div>{CanBo?.Ten_CB ? CanBo?.Ten_CB : ""}</div>
     },
     {
-      title: "Ngày học",
-      dataIndex: "LichHoc",
+      title: "Ngày mượn",
+      dataIndex: "createdAt",
       align: 'center',
       // width: '20%',
-      render: (LichHoc: any) => <div>{LichHoc?.NgayHoc ? dayjs(LichHoc?.NgayHoc).format("DD/MM/YYYY") : ""}</div>
+      render: (createdAt) => <div>{createdAt  ? dayjs(createdAt).format("DD/MM/YYYY") : ""}</div>,
+      // render: (LichHoc: any) => <div>{LichHoc?.NgayHoc ? dayjs(LichHoc?.NgayHoc).format("DD/MM/YYYY") : ""}</div>
     },
     {
       title: "Thời gian bắt đầu",
@@ -92,12 +95,35 @@ const LichSudung = () => {
     },
   ]
 
+  //get can bo
+  const getCanbo = () => {
+    canboServices.get({
+      page: 1, 
+      size: 100
+    }).then((res) => {
+   
+      if(res.status) {
+          const temp = res?.data?.data.map((item: any) => {
+            return {
+              label: item?.Ten_CB,
+              value: item?.Ma_CB
+            }
+        })
+        setCanbos(temp)
+        
+      }
+      
+    }).catch((err :any) => console.log(err))
+  }
+
   const getData = () => {
     setLoading(true)
     muontraServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { ten_nguoi_muon: search })
+      ...(search && search !== "" && { ten_nguoi_muon: search }),
+      ...(searchMaCB && { Ma_CB: searchMaCB }),
+      ...(khoangthoigian && {batdau: khoangthoigian?.batdau , ketthuc: khoangthoigian?.ketthuc})
     }).then(res => {
       if (res.status) {
         setCount(res.data.count)
@@ -109,11 +135,27 @@ const LichSudung = () => {
       setLoading(false)
     })
   }
+  useEffect(() => {
+    getCanbo()
+  }, [])
  
   useEffect(() => {
     getData()
-  }, [currentPage, rowsPerPage, search])
- 
+  }, [currentPage, rowsPerPage, search, searchMaCB, khoangthoigian])
+
+  const hanldeChangeRangePicker = (value: any) => {
+    if (value) {
+      const data = {
+        batdau: dayjs(value[0]),
+        ketthuc: dayjs(value[1])
+      }
+      setKhoangThoiGian(data)
+    }else {
+      setKhoangThoiGian(null)
+    }
+  }
+  const filterOption = (input: string, option?: { label: string; value: string }) =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
   return <div className="ds_muontra">
     {contextHolder}
     <Row>
@@ -133,14 +175,14 @@ const LichSudung = () => {
    
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
-    <Row>
+    <Row gutter={15}>
       <Col span={6}>
         <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
           <label style={{ marginBottom: "4px" }}>Tên người mượn</label>
           <Input
             type="text"
             placeholder="Tìm kiếm"
-            style={{ height: "34px" }}
+           
             onChange={(e) => {
               if (e.target.value === "") {
                 setSearch('')
@@ -155,6 +197,18 @@ const LichSudung = () => {
           />
         </div>
       </Col>
+      <Col span={6}>
+          <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
+            <label style={{ marginBottom: "4px" }}>Nhân viên phụ trách</label>
+            <Select filterOption={filterOption} allowClear showSearch options={canbos} style={{width:"100%"}} onChange={(value) => setSearchMaCB(value) } placeholder="Chọn nhân viên phụ trách"/>
+          </div>
+       </Col>
+       <Col span={6}>
+          <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
+            <label style={{ marginBottom: "4px" }}>Chọn khoảng thời gian</label>
+            <RangePicker locale={locale} format={"DD/MM/YYYY"} onChange={(value: any) => hanldeChangeRangePicker(value)} placeholder={["Bắt đầu", "Kết thúc"]}/>
+          </div>
+       </Col>
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
     <Row>

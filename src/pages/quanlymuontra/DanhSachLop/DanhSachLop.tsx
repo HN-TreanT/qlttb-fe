@@ -143,7 +143,7 @@ const DanhSachLop = () => {
       <Row>
         <Col span={6}>
           <div style={{ width: "100%", display:"flex", flexDirection:"column", justifyContent:"flex-start",alignItems:"flex-start"}}>
-            <label style={{marginBottom:"4px"}}>Tên phòng</label>
+            <label style={{marginBottom:"4px"}}>Tên lớp</label>
             <Input
                 type="text"
                 placeholder="Tìm kiếm"

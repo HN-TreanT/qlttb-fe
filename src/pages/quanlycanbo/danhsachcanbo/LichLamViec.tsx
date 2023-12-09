@@ -94,7 +94,7 @@ const LichLamViec = (props: props) => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Cán bộ phụ trách",
+      title: "Nhân viên phụ trách",
       dataIndex: "CanBo",
       align: "center",
       render: (text, record, index) => <span>{text?.Ten_CB ? text?.Ten_CB : ""}</span>

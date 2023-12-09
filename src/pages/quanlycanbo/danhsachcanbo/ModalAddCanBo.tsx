@@ -3,6 +3,8 @@ import {Form, Row, Col, Modal, Input, DatePicker, Select, Button} from 'antd'
 import { canboServices } from "../../../utils/services/canbo";
 import { message } from "antd";
 import dayjs from "dayjs";
+import locale from 'antd/es/date-picker/locale/vi_VN'
+
 const FormItem = Form.Item
 
 const gioitinh = [
@@ -75,7 +77,7 @@ interface Props {
   return  <Fragment>
     {contextHolder}
     <Modal
-     title={action === "Add" ? "Thêm mới cán bộ" : "Chỉnh sửa cán bộ"}
+     title={action === "Add" ? "Thêm mới nhân viên" : "Chỉnh sửa nhân viên"}
      open={open}
      footer={null}
      onCancel={() => handleModal()}
@@ -125,17 +127,17 @@ interface Props {
             <FormItem
               style={{marginBottom:"4px"}}
               label={
-               "Tên cán bộ"
+               "Tên nhân viên"
               }
               name='Ten_CB'
               rules={[
                 {
                   required: true,
-                  message: 'Hãy nhập tên cán bộ'
+                  message: 'Hãy nhập tên nhân viên'
                 }
               ]}
             >
-              <Input placeholder="Nhập tên cán bộ"/>
+              <Input placeholder="Nhập tên nhân viên"/>
               
             </FormItem>
           </Col>
@@ -153,7 +155,7 @@ interface Props {
                 }
               ]}
             >
-              <DatePicker style={{width:"100%"}} placeholder="Chọn ngày sinh"/>
+              <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn ngày sinh"/>
               
             </FormItem>
           </Col>

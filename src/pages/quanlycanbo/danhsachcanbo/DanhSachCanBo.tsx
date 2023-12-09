@@ -84,7 +84,7 @@ const DanhSachCanBo = () => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
-      title: "Tên cán bộ",
+      title: "Tên nhân viên",
       dataIndex: "Ten_CB",
       align: "center"
     },
@@ -132,11 +132,11 @@ const DanhSachCanBo = () => {
         style={{ margin: "auto", marginLeft: 0 }}
         items={[
           {
-            title: "Quản lý cán bộ",
+            title: "Quản lý nhân viên",
           },
           {
             title: (
-              <span style={{ fontWeight: "bold" }}>Danh sách cán bộ</span>
+              <span style={{ fontWeight: "bold" }}>Danh sách nhân viên</span>
             ),
           },
         ]}

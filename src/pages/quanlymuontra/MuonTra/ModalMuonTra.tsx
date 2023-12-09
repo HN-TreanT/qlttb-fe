@@ -163,13 +163,13 @@ const ModalMuonTra = (props: Props) => {
                         <FormItem
                             style={{ marginBottom: "4px" }}
                             label={
-                                "Cán bộ "
+                                "Nhân viên "
                             }
                             name='Ma_CB'
                             rules={[
                                 {
                                     required: true,
-                                    message: 'nhập Tên cán bộ'
+                                    message: 'Nhập tên nhân viên'
                                 }
                             ]}
                         >
@@ -179,7 +179,7 @@ const ModalMuonTra = (props: Props) => {
                                     value: item.Ma_CB,
                                     label: item.Ten_CB
                                 }
-                            }) : []} placeholder="Chọn cán bộ "
+                            }) : []} placeholder="Chọn nhân viên "
                                 filterOption={filterOption}
                             />
                         </FormItem>

@@ -92,9 +92,10 @@ const TinhTrangTTB = () => {
   useEffect(() => {
     dispatch(actions.tinhtrangTTBActions.loadData({
       page: currentPage,
-      size: rowsPerPage
+      size: rowsPerPage,
+      ...(search && search !== "" && {TinhTrang: search})
     }))
-  }, [actions.tinhtrangTTBActions, currentPage, dispatch, rowsPerPage])
+  }, [actions.tinhtrangTTBActions, currentPage, dispatch, rowsPerPage, search])
   // console.log(data)
   return <div className="ds_trangthietbi">
     {contextHolder}

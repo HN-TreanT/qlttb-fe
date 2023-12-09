@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import useAction from "../../../redux/useActions";
 import dayjs from "dayjs";
 import { LichSuTinhTrangServices } from "../../../utils/services/lichsuTinhTrang";
+import locale from 'antd/es/date-picker/locale/vi_VN'
+
 const FormItem = Form.Item
 
 interface Props {
@@ -116,7 +118,7 @@ const ModalLSTT = (props: Props) => {
                                 }
                             ]}
                         >
-                            <DatePicker style={{width:"100%"}} placeholder='Chọn thời gian bắt đầu' />
+                            <DatePicker locale={locale} style={{width:"100%"}} placeholder='Chọn thời gian bắt đầu' />
                         </FormItem>
                     </Col>
                 
@@ -134,7 +136,7 @@ const ModalLSTT = (props: Props) => {
                                 }
                             ]}
                         >
-                            <DatePicker style={{width:"100%"}} placeholder="Chọn thời gian kết thúc" />
+                            <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn thời gian kết thúc" />
 
                         </FormItem>
                     </Col>

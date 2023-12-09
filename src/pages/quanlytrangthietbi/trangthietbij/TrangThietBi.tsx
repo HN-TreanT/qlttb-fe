@@ -139,7 +139,7 @@ const TrangThietBi = () => {
     {
       title: "Trạng thái",
       dataIndex: "TrangThai",
-      render: (TrangThai) => <div>{TrangThai === 1 ?<Tag color="volcano">Đang mượn</Tag> :  <Tag color="green" >Có sẵn</Tag>}</div>,
+      render: (TrangThai) => <div>{TrangThai === 1 ? <Tag color="volcano">Đang mượn</Tag> : TrangThai === 0 ?  <Tag color="green" >Có sẵn</Tag> : <Tag color="red" >Hỏng</Tag>}</div>,
       align: 'center',
     },
     // {
