@@ -39,7 +39,8 @@ const ModalAddChiTietMuonTra = (props: props) => {
                 value: item?.Ma_TTB
               }
             } )
-            setTtbs(temp)
+            const t = temp.filter((item: any) => item?.TrangThai === 0)
+            setTtbs(t)
           }
         }).catch((err: any) => {
           console.log(err)
@@ -47,18 +48,18 @@ const ModalAddChiTietMuonTra = (props: props) => {
       }
 
 
-    const onFinish = (value: any) => {
+    const onFinish = async (value: any) => {
         if(action === "Add") {          
            try {
             if (Array.isArray(value?.Ma_TTB)) {
-                value.Ma_TTB.map( async (item: any) => {
-                    const dataSubmit = {
-                        Ma_LSM : Ma_LSM,
-                        Ma_TTB : item,
-                        TrangThai:"Đang mượn"
-                    }
-                    await lichsusudungServices.create(dataSubmit)
-                })
+              await Promise.all( value.Ma_TTB.map( async (item: any) => {
+                const dataSubmit = {
+                    Ma_LSM : Ma_LSM,
+                    Ma_TTB : item,
+                    TrangThai:"Đang mượn"
+                }
+                await lichsusudungServices.create(dataSubmit)
+            }))
                 message.success("Thêm mới thành công")
                 getData()
                 getTTB()
