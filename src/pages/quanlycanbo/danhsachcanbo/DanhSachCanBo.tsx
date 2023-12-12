@@ -33,7 +33,8 @@ const DanhSachCanBo = () => {
     canboServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && { Ten_CB: search })
+      ...(search && search !== "" && { Ten_CB: search }),
+      role: "U"
     }).then((res: any) => {
       if (res.status) {
         setCount(res.data.count)
