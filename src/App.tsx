@@ -45,7 +45,7 @@ function App() {
                            <Route path={RouterLinks.LICH_LAM_VIEC} element={<Suspense fallback={null}><LichLamViec /></Suspense>} />
                            <Route path={RouterLinks.TRANG_THIET_BI} element={<Suspense fallback={null}><TrangThietBi /></Suspense>} />
                            <Route path={RouterLinks.LOAI_TTB} element={<Suspense fallback={null}><LoaiTTB /></Suspense>} />
-                           <Route path={RouterLinks.TINH_TRANG_TTB} element={<Suspense fallback={null}><TinhTrangTTB /></Suspense>} />
+                           {/* <Route path={RouterLinks.TINH_TRANG_TTB} element={<Suspense fallback={null}><TinhTrangTTB /></Suspense>} /> */}
                            <Route path={RouterLinks.LS_SU_DUNG_TTB} element={<Suspense fallback={null}><LichSuSuDung /></Suspense>} />
                            <Route path={RouterLinks.NHAP_THIET_BI} element={<Suspense fallback={null}><NhapThietBi /></Suspense>} />
                            <Route path={RouterLinks.LICH_HOC_TAP} element={<Suspense fallback={null}><LichHocTap /></Suspense>} />

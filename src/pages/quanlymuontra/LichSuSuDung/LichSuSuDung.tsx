@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Table, Breadcrumb, Divider, Input, Tag, Select, DatePicker } from "antd"
 import { ColumnProps } from "antd/es/table";
 import { message } from "antd";
+import {  EyeOutlined } from '@ant-design/icons'
+
 import TrangThietBi from "./TrangThietBi";
 import { muontraServices } from "../../../utils/services/muontraService";
 import dayjs from "dayjs";
@@ -25,7 +27,15 @@ const LichSudung = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0)
-
+  const [curData, setCurdata] = useState<any>()
+  const [openModal, setOpenModal] = useState(false)
+  const handleModal = () => {
+    setOpenModal(false)
+  }
+  const handleDetail = (data: any) => {
+    setCurdata(data)
+    setOpenModal(true)
+  }
 
   const columns: ColumnProps<DataType>[] = [
     {
@@ -84,7 +94,7 @@ const LichSudung = () => {
       title: "Trạng thái",
       dataIndex: "TrangThai",
       align: 'center',
-      width: '13%',
+      width: '7%',
       render: (TrangThai) => <div>{TrangThai === 0 ? <Tag color="volcano">Đang mượn</Tag> : <Tag color="green" >Đã trả</Tag>}</div>,
 
     },
@@ -93,6 +103,13 @@ const LichSudung = () => {
       dataIndex: "ChuThich",
 
     },
+    {
+      title: 'Thao tác',
+      width: '108px',
+      render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
+        <EyeOutlined onClick={() => handleDetail(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />     
+      </div>
+    }
   ]
 
   //get can bo
@@ -128,6 +145,7 @@ const LichSudung = () => {
       if (res.status) {
         setCount(res.data.count)
         setData(res.data.data)
+        
       }
       setLoading(false)
     }).catch((err: any) => {
@@ -250,9 +268,10 @@ const LichSudung = () => {
         }}
       />
     </Row>
-    
+    <ModalChiTiet open={openModal} handleModal={handleModal} curData={curData}/>
 
   </div>;
 };
 
+const ModalChiTiet = React.lazy(() => import("./ModalChitiet"))
 export default LichSudung;

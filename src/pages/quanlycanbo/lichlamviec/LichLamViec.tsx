@@ -36,7 +36,8 @@ const LichLamViec = () => {
     lichlamviceServices.get({
       page: currentPage,
       size: rowsPerPage,
-      ...(search && search !== "" && {search})
+      ...(search && search !== "" && {search}),
+      ...(role === "U" && {Ma_CB: canbo.Ma_CB})
     }).then((res) => {
        if(res.status) {
           setCount(res.data.count)

@@ -169,7 +169,7 @@ async function fetchCanbo(search: string): Promise<UserValue[]> {
               name='Ngay'
              
             >
-              <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
+              <DatePicker format={"DD/MM/YYYY"} locale={locale} style={{width:"100%"}} placeholder="Chọn ngày thực hiện"/>
               
             </FormItem>
           </Col>

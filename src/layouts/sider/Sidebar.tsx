@@ -60,11 +60,11 @@ const menuItems = [
         label: "Loại trang thiết bị",
         role: "U"
       },
-      {
-        key: RouterLinks.TINH_TRANG_TTB,
-        label: "Tình trạng trang thiết bị",
-        role: "U"
-      },
+      // {
+      //   key: RouterLinks.TINH_TRANG_TTB,
+      //   label: "Tình trạng trang thiết bị",
+      //   role: "U"
+      // },
       {
         key: RouterLinks.NHAP_THIET_BI,
         label: "Cập nhật trang thiết bị",

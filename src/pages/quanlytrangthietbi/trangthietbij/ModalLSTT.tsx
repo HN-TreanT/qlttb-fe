@@ -118,7 +118,7 @@ const ModalLSTT = (props: Props) => {
                                 }
                             ]}
                         >
-                            <DatePicker locale={locale} style={{width:"100%"}} placeholder='Chọn thời gian bắt đầu' />
+                            <DatePicker format={"DD/MM/YYYY"} locale={locale} style={{width:"100%"}} placeholder='Chọn thời gian bắt đầu' />
                         </FormItem>
                     </Col>
                 
@@ -136,7 +136,7 @@ const ModalLSTT = (props: Props) => {
                                 }
                             ]}
                         >
-                            <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn thời gian kết thúc" />
+                            <DatePicker format={"DD/MM/YYYY"} locale={locale} style={{width:"100%"}} placeholder="Chọn thời gian kết thúc" />
 
                         </FormItem>
                     </Col>

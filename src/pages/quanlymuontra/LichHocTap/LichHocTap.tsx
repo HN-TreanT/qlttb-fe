@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select } from "antd"
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { Row, Col, Table, Breadcrumb, Divider, Popconfirm, Button, Select, DatePicker, Upload, UploadProps } from "antd"
+import { DeleteOutlined, EditOutlined , UploadOutlined} from '@ant-design/icons'
 import { ColumnProps } from "antd/es/table";
 import useAction from "../../../redux/useActions";
 import { message } from "antd";
-import { lichhoctapServices } from "../../../utils/services/lichhoctapService";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { lopServices } from "../../../utils/services/lopService";
 import LopThamGia from "./LopThamGia";
+import locale from 'antd/es/date-picker/locale/vi_VN'
+import { lichhoctapServices } from "../../../utils/services/lichhoctapService";
+const { RangePicker } = DatePicker;
 interface DataType {
   Ma_LH: any;
   key: number;
@@ -40,8 +42,21 @@ const LichHocTap = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [searchPhongHoc, setSearchPhongHoc] = useState<any>()
+  const [searchNgayHoc, setSearchNgayhoc] = useState<any>()
 
 
+
+  const hanldeChangeRangePicker = (value: any) => {
+    if (value) {
+      const data = {
+        batdau: dayjs(value[0]),
+        ketthuc: dayjs(value[1])
+      }
+      setSearchNgayhoc(data)
+    }else {
+      setSearchNgayhoc(null)
+    }
+  }
 
   const getLops = () => {
     lopServices.get({
@@ -70,7 +85,9 @@ const LichHocTap = () => {
       page: currentPage,
       size: rowsPerPage,
       ...(search && search !== " " && { search }),
-      ...(searchPhongHoc && {Ma_PH: searchPhongHoc})
+      ...(searchPhongHoc && {Ma_PH: searchPhongHoc}),
+      ...(searchNgayHoc && {batdau: searchNgayHoc?.batdau , ketthuc: searchNgayHoc?.ketthuc})
+
     }).then((res) => {
 
       if (res.status) {
@@ -184,39 +201,76 @@ const LichHocTap = () => {
   useEffect(() => {
     getData()
    
-  }, [currentPage, rowsPerPage, search, searchPhongHoc])
+  }, [currentPage, rowsPerPage, search, searchPhongHoc, searchNgayHoc])
   const filterOption = (input: string, option?: { label: string; value: string }) =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+  const props: UploadProps = {
+    // action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+    // listType: 'picture',
+    beforeUpload(file: any) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+         const formData = new FormData()
+         formData.set("file", file)
+         lichhoctapServices.importExcel(formData).then((res) => {
+            if (res.status) {
+               getData()
+               message.success("Nhập file thành công")
+            }
+         }).catch((err :any) => {
+          console.log(err)
+           message.error("Nhập file thất bại")
+
+         })
+      
+        };
+      });
+    },
+  }
   return <div className="ds_canbo">
     {contextHolder}
     <Row>
-      <Breadcrumb
-        style={{ margin: "auto", marginLeft: 0 }}
-        items={[
-          {
-            title: "Quản lý lịch học",
-          },
-          {
-            title: (
-              <span style={{ fontWeight: "bold" }}>Lịch học tập</span>
-            ),
-          },
-        ]}
-      />
-      <Button
-        type="primary"
-        style={{ marginLeft: "auto", width: 100 }}
-        className="blue-button"
-        onClick={() => {
-          setOpenModalAdd(true)
-          setCurData({})
-        }}
-      >
-        Thêm mới
-      </Button>
+      <Col span={12}>
+          <Breadcrumb
+            style={{ margin: "auto", marginLeft: 0 }}
+            items={[
+              {
+                title: "Quản lý lịch học",
+              },
+              {
+                title: (
+                  <span style={{ fontWeight: "bold" }}>Lịch học tập</span>
+                ),
+              },
+            ]}
+          />
+      </Col>
+      <Col span={8}></Col>
+      <Col style={{display:"flex", justifyContent:"flex-end"}} span={4}>
+            <Upload
+            {...props}
+            >
+              <Button style={{backgroundColor:"#24A019", color:"white"}} icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+            <Button
+              style={{   marginLeft:"5px"}}
+              type="primary"
+              className="blue-button"
+            onClick={() => {
+              setOpenModalAdd(true)
+              setCurData({})
+            }}
+          >
+            Thêm mới
+          </Button>
+       </Col>
+      
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
-    <Row>
+    <Row gutter={15}>
       <Col span={4}>
         <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
           <label style={{ marginBottom: "4px" }}>Phòng học</label>
@@ -232,6 +286,12 @@ const LichHocTap = () => {
           }) : []} placeholder="Chọn  phòng học"
               filterOption={filterOption}
               />
+        </div>
+      </Col>
+      <Col span={4}>
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
+          <label style={{ marginBottom: "4px" }}>Ngày học</label>
+          <RangePicker locale={locale} format={"DD/MM/YYYY"} onChange={(value: any) => hanldeChangeRangePicker(value)} placeholder={["Bắt đầu", "Kết thúc"]}/>
         </div>
       </Col>
       <Divider style={{ margin: "10px" }}></Divider>

@@ -112,17 +112,17 @@ const LichSuTinhTrang = ({ttb} : any) => {
       align: "center",
       render: (TG_KT) => <div>{TG_KT ? dayjs(TG_KT).format("DD/MM/YYYY") : ""}</div>,
     },
-    {
-      title: 'Thao tác',
-      width: '108px',
-      render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
+    // {
+    //   title: 'Thao tác',
+    //   width: '108px',
+    //   render: (record: any, index: any) => <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: '20px', paddingLeft: '20px' }}>
 
-        <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
-        <Popconfirm onConfirm={() => hanldeDelete(record.Ma_LSTT)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
-          <DeleteOutlined style={{ color: 'red', cursor: 'point' }} />
-        </Popconfirm>
-      </div>
-    }
+    //     <EditOutlined onClick={() => hanldUpdate(record)} style={{ marginRight: '1rem', color: '#036CBF', cursor: 'pointer' }} />
+    //     <Popconfirm onConfirm={() => hanldeDelete(record.Ma_LSTT)} title="Bạn chắc chắn xóa?" cancelText='Hủy' okText='Đồng ý'>
+    //       <DeleteOutlined style={{ color: 'red', cursor: 'point' }} />
+    //     </Popconfirm>
+    //   </div>
+    // }
   ]
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const LichSuTinhTrang = ({ttb} : any) => {
     {contextHolder}
     <Row>
       <h3>Lịch sử tình trạng trang thiết bị</h3>
-      <Button
+      {/* <Button
         type="primary"
         style={{ marginLeft: "auto", width: 100 }}
         className="blue-button"
@@ -147,7 +147,7 @@ const LichSuTinhTrang = ({ttb} : any) => {
         }}
       >
         Thêm mới
-      </Button>
+      </Button> */}
       <Divider style={{ margin: "10px" }}></Divider>
     </Row>
     <Row>

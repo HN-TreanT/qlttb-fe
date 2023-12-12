@@ -114,6 +114,13 @@ const TrangThietBi = () => {
       render: (text, record, index) => <span>{(((currentPage - 1) * rowsPerPage) + index + 1)}</span>
     },
     {
+      title: "Mã trang thiết bị",
+      dataIndex: "Ma_TTB",
+      align: "center",
+      width: 150,
+      render: (value) => `tb-${value}`
+    },
+    {
       title: "Tên trang thiết bị",
       dataIndex: "Ten_TTB",
       align: "center"

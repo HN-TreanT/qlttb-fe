@@ -3,10 +3,10 @@ import { Radio, Row, Col, Checkbox } from "antd";
 import "./cardInfo.scss"
 import dayjs from "dayjs";
 interface props {
-    valueCheckbox: any,
+    valueCheckbox?: any,
     infoLichHoc: any,
-    handleChange: any,
-    valueSelected: any
+    handleChange?: any,
+    valueSelected?: any
 }
 const CardInfoLichHoc = (props: props) => {
     const {valueCheckbox, handleChange, valueSelected, infoLichHoc} = props

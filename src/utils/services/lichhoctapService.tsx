@@ -25,6 +25,14 @@ const create = (data: any) => {
   });
 };
 
+const importExcel = (data: any) => {
+  return api.makeAuthRequest({
+    url: "/api/lich-hoc/import-excel",
+    method: "POST",
+    data: data,
+  });
+};
+
 const update = (id: Number, data: any) => {
   return api.makeAuthRequest({
     url: `/api/lich-hoc/${id}`,
@@ -46,4 +54,5 @@ export const lichhoctapServices = {
   create,
   update,
   deleteById,
+  importExcel
 };

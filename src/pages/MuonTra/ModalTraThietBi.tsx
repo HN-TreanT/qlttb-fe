@@ -26,7 +26,8 @@ const ModalTraTrangThietBi = (props: props) => {
     const [dataSource, setDataSource] = useState([])
     const [infoSelected, setInfoSelected] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
-
+    const [valueNhanxat, setValueNhanXet] = useState(undefined)
+    const [valueChecked, setValueChecked] = useState(false)
 
     const getDataDD = () => {
       if (curData?.Ma_LSM) {
@@ -107,8 +108,11 @@ const ModalTraTrangThietBi = (props: props) => {
             //       })
             //     }
             // })
+            setValueNhanXet(undefined)
+            setValueChecked(false)
             handleModal()
             getData()
+
             message.success("Trả thiết bị thành công")
        } catch (err: any) {
           console.log(err)
@@ -138,7 +142,7 @@ const ModalTraTrangThietBi = (props: props) => {
         {
           title: "Nhận xét",
           // dataIndex: "NhanXet",
-          render: (record: any) => <Input onChange={(e: any) => {
+          render: (record: any) => <Input value={valueNhanxat}  onChange={(e: any) => {
             const updateInfoSeleted = infoSelected.map((item: any) => {
               if(item.Ma_LSM_TTB === record?.Ma_LSM_TTB) {
                   item.NhanXet = e.target.value 
@@ -151,7 +155,7 @@ const ModalTraTrangThietBi = (props: props) => {
         {
           title: "Hỏng",
           width: '7%',
-          render: (record: any) => <Checkbox onChange={(e: any) => {
+          render: (record: any) => <Checkbox value={valueChecked} onChange={(e: any) => {
               const updateInfoSeleted = infoSelected.map((item: any) => {
                 if(item.Ma_LSM_TTB === record?.Ma_LSM_TTB) {
                     item.Hong = e.target.checked
@@ -166,7 +170,8 @@ const ModalTraTrangThietBi = (props: props) => {
       
       useEffect(() => {
         getDataDD()
-      
+        setValueNhanXet(undefined)
+        setValueChecked(false)
       }, [curData])
     return<Fragment>
       {contextHolder}

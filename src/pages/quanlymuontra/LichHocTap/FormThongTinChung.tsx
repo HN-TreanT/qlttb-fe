@@ -140,7 +140,7 @@ const FormThongTinChung = (props: Props) => {
                     }
                 ]}
             >
-                <DatePicker locale={locale} style={{width:"100%"}} placeholder='Chọn ngày học' />
+                <DatePicker format={"DD/MM/YYYY"} locale={locale} style={{width:"100%"}} placeholder='Chọn ngày học' />
             </FormItem>
         </Col>
         <Col span={12}>

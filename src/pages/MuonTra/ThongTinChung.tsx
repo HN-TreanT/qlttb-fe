@@ -6,6 +6,7 @@ import { muontraServices } from "../../utils/services/muontraService";
 import CardInfoLichHoc from "../../components/CardInfoLichHoc";
 import { TrangthietbiServices } from "../../utils/services/trangthietbiServices";
 import DebounceSelect from "../../components/DebouceSelect";
+import dayjs, {} from 'dayjs'
 interface props{
     action: string,
     handleModal : any,
@@ -72,11 +73,14 @@ const ThongTinChung = (props: props) => {
         }
     }
 
+
     const getLichHoc = (Ma_PH: any) => {
         lichhoctapServices.get({
             page: 1,
-            size : 4,
-            ...(Ma_PH && {Ma_PH})
+            size : 100,
+            ...(Ma_PH && {Ma_PH}),
+           batdau: dayjs().startOf('day') , 
+           ketthuc: dayjs().endOf('day')
         }).then((res :any) => {
             if(res.status) {
                 setLichHoc(res.data.data)

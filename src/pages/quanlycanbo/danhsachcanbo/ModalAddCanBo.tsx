@@ -155,7 +155,7 @@ interface Props {
                 }
               ]}
             >
-              <DatePicker locale={locale} style={{width:"100%"}} placeholder="Chọn ngày sinh"/>
+              <DatePicker format={"DD/MM/YYYY"} locale={locale} style={{width:"100%"}} placeholder="Chọn ngày sinh"/>
               
             </FormItem>
           </Col>
